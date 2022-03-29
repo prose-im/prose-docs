@@ -1,0 +1,4 @@
+src/data/guides/**/*.png filter=lfs diff=lfs merge=lfs -text
+src/data/guides/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+src/data/guides/**/*.jpeg filter=lfs diff=lfs merge=lfs -text
+src/data/guides/**/*.gif filter=lfs diff=lfs merge=lfs -text
