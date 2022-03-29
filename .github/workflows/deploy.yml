@@ -43,13 +43,9 @@ jobs:
       - name: Build docs
         run: npm run build
 
-      - name: Setup S3 credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.S3_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.S3_REGION }}
-
       - name: Deploy docs
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
         run: |
           aws s3 sync --delete --endpoint-url ${{ secrets.S3_ENDPOINT }} build/ s3://${{ secrets.S3_BUCKET }}/${{ secrets.S3_SITE_DOMAIN }}/
