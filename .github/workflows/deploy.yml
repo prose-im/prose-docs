@@ -52,4 +52,4 @@ jobs:
 
       - name: Deploy docs
         run: |
-          aws s3 sync --delete build/ s3://${{ secrets.S3_BUCKET }}/${{ secrets.S3_SITE_DOMAIN }}/
+          aws s3 sync --delete --endpoint-url ${{ secrets.S3_ENDPOINT }} build/ s3://${{ secrets.S3_BUCKET }}/${{ secrets.S3_SITE_DOMAIN }}/
