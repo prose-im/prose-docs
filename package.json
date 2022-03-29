@@ -1,0 +1,27 @@
+{
+  "name": "prose-docs",
+  "description": "Prose Server Docs",
+  "version": "1.0.0",
+  "homepage": "https://github.com/prose-im/prose-docs",
+  "license": "UNLICENSED",
+  "private": true,
+  "engineStrict": true,
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prose-im/prose-docs.git"
+  },
+  "author": {
+    "name": "Prose Foundation",
+    "email": "dev@prose.org",
+    "url": "https://prose.org/"
+  },
+  "scripts": {
+    "build": "./tools/build.sh"
+  },
+  "devDependencies": {
+    "chappe": "1.6.4"
+  }
+}

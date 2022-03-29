@@ -1,0 +1,307 @@
+{
+  "identity" : {
+    "title"     : "Acme Developer Hub",
+    "copyright" : "Acme Inc."
+  },
+
+  "theme" : {
+    "accent" : {
+      "base"   : "#2275f1",
+      "active" : "#0f69ef"
+    }
+  },
+
+  "urls" : {
+    "base" : "https://docs.acme.com"
+  },
+
+  "favicons" : {
+    "main"  : "favicons/favicon.ico",
+
+    "sizes" : {
+      "default" : "favicons/favicon.png",
+      "512x512" : "favicons/favicon-512x512.png",
+      "256x256" : "favicons/favicon-256x256.png",
+      "128x128" : "favicons/favicon-128x128.png",
+      "32x32"   : "favicons/favicon-32x32.png"
+    }
+  },
+
+  "images" : {
+    "illustrations" : {
+      "home" : "images/illustrations/home.png"
+    },
+
+    "logos" : {
+      "header_full"  : "images/logos/logo-header-full.svg",
+      "header_short" : "images/logos/logo-header-short.svg",
+      "footer"       : "images/logos/logo-footer.svg"
+    },
+
+    "categories" : {
+      "guides" : {
+        "hello-world"     : "images/categories/guides/hello-world.svg",
+        "markdown-syntax" : "images/categories/guides/markdown-syntax.svg"
+      },
+
+      "references" : {
+        "rest-api" : "images/categories/references/rest-api.svg",
+        "rtm-api"  : "images/categories/references/rtm-api.svg",
+        "team"     : "images/categories/references/team.svg"
+      }
+    }
+  },
+
+  "dimensions" : {
+    "logos" : {
+      "header_full"  : {
+        "width" : 136
+      },
+
+      "header_short" : {
+        "width" : 46
+      },
+
+      "footer"       : {
+        "width" : 84
+      }
+    }
+  },
+
+  "colors" : {
+    "changes" : {
+      "groups" : {
+        "rest_api"  : "#d34040",
+        "rtm_api"   : "#dc9b37",
+        "web_hooks" : "#1a71f5"
+      }
+    }
+  },
+
+  "texts" : {
+    "home" : {
+      "title" : "Welcome to the Acme Developer Hub",
+      "label" : "Build apps for 10M+ Acme app users."
+    },
+
+    "changes" : {
+      "groups" : {
+        "rest_api"  : "REST API",
+        "rtm_api"   : "RTM API",
+        "web_hooks" : "Web Hooks"
+      },
+
+      "titles" : {
+        "feed"   : "Acme Platform Changes",
+        "latest" : "Latest Platform Changes",
+        "year"   : "Platform Changes In"
+      },
+
+      "notice" : "**The Acme Platform is updated every day with improvements and new features.** This page is a ledger of all notable changes that occured over time, and which may impact your integrations.\n\n**Note that breaking changes appear in red.**\n\nIf you would like to monitor those changes, an RSS feed is available at: [`changes.rss`](/changes.rss)"
+    }
+  },
+
+  "links" : {
+    "header" : {
+      "navigation" : [
+        {
+          "route" : ["guides"],
+          "label" : "Guides"
+        },
+
+        {
+          "route"    : ["references"],
+          "label"    : "References",
+
+          "dropdown" : [
+            {
+              "route" : ["rest-api", "v1"],
+              "label" : "REST API Reference"
+            },
+
+            {
+              "route" : ["rtm-api", "v1"],
+              "label" : "RTM API Reference"
+            }
+          ]
+        }
+      ],
+
+      "actions" : [
+        {
+          "label"    : "Sign Up",
+
+          "dropdown" : [
+            {
+              "title"    : "Sign Up to Acme",
+              "subtitle" : "Create your Acme user account.",
+              "target"   : "https://dashboard.acme.com/"
+            },
+
+            {
+              "title"    : "Sign Up to Developer Center",
+              "subtitle" : "Start building Acme integrations.",
+              "target"   : "https://developers.acme.com/"
+            }
+          ]
+        }
+      ]
+    },
+
+    "footer" : {
+      "navigation" : [
+        {
+          "label"  : "Acme Website",
+          "target" : "https://acme.com/"
+        },
+
+        {
+          "label"  : "Terms of Use",
+          "target" : "https://acme.com/terms/"
+        },
+
+        {
+          "label"  : "Privacy Policy",
+          "target" : "https://acme.com/privacy/"
+        },
+
+        {
+          "label"  : "About Us",
+          "target" : "https://acme.com/about/"
+        },
+
+        {
+          "label"  : "Read our Blog",
+          "target" : "https://blog.acme.com/"
+        }
+      ]
+    }
+  },
+
+  "actions" : {
+    "home" : [
+      {
+        "route" : ["guides"],
+        "label" : "Build your First Acme App"
+      }
+    ]
+  },
+
+  "bulletpoints" : {
+    "home" : {
+      "quickstart" : {
+        "description" : "Start building on the top of the Acme Platform in a matter of minutes.",
+
+        "actions"     : [
+          {
+            "route" : ["guides"],
+            "label" : "Start building"
+          }
+        ]
+      },
+
+      "guides" : {
+        "description" : "Guides & tutorials on how to integrate Acme with your systems.",
+
+        "actions"     : [
+          {
+            "route" : ["guides", "hello-world"],
+            "label" : "Introduction"
+          },
+
+          {
+            "route" : ["guides", "markdown-syntax", "syntax"],
+            "label" : "Markdown Syntax"
+          }
+        ]
+      },
+
+      "references" : {
+        "description" : "In-depth technical references of all available Acme APIs.",
+
+        "actions"     : [
+          {
+            "route" : ["references", "rest-api", "v1"],
+            "label" : "REST API"
+          },
+
+          {
+            "route" : ["references", "rtm-api", "v1"],
+            "label" : "RTM API"
+          }
+        ]
+      }
+    }
+  },
+
+  "includes" : {
+    "scripts" : {
+      "urls"   : [],
+      "inline" : []
+    },
+
+    "stylesheets" : {
+      "urls"   : [],
+      "inline" : []
+    }
+  },
+
+  "tokens" : {
+    "crisp_website_id" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+  },
+
+  "plugins" : {
+    "code" : {
+      "syntaxes" : [
+        "markup",
+        "markup-templating",
+        "css",
+        "clike",
+        "c",
+        "javascript",
+        "bash",
+        "go",
+        "java",
+        "groovy",
+        "json",
+        "php",
+        "python",
+        "ruby",
+        "rust",
+        "swift",
+        "objectivec"
+      ]
+    }
+  },
+
+  "rules" : {
+    "build_size" : {
+      "fail"  : true,
+
+      "sizes" : {
+        "references" : {
+          "pages" : {
+            "gzip_maximum" : 80000
+          }
+        },
+
+        "guides" : {
+          "pages" : {
+            "gzip_maximum" : 25000
+          },
+
+          "images" : {
+            "maximum" : 500000
+          }
+        },
+
+        "data" : {
+          "objects" : {
+            "maximum"      : 140000,
+            "gzip_maximum" : 25000
+          }
+        }
+      }
+    }
+  }
+}
