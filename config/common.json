@@ -28,10 +28,6 @@
   },
 
   "images" : {
-    "illustrations" : {
-      "home" : "images/illustrations/home.png"
-    },
-
     "logos" : {
       "header_full"  : "images/logos/logo-header-full.svg",
       "header_short" : "images/logos/logo-header-short.svg",
