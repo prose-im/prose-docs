@@ -58,19 +58,13 @@
     },
 
     "changes" : {
-      "groups" : {
-        "rest_api"  : "REST API",
-        "rtm_api"   : "RTM API",
-        "web_hooks" : "Web Hooks"
-      },
-
       "titles" : {
         "feed"   : "Prose Platform Changes",
         "latest" : "Latest Platform Changes",
         "year"   : "Platform Changes In"
       },
 
-      "notice" : "**The Prose Platform is updated every day with improvements and new features.** This page is a ledger of all notable changes that occured over time, and which may impact your integrations.\n\n**Note that breaking changes appear in red.**\n\nIf you would like to monitor those changes, an RSS feed is available at: [`changes.rss`](/changes.rss)"
+      "notice" : "**The Prose Platform is updated every day with improvements and new features.** This page is a ledger of all notable changes that occured over time.\n\n**Note that breaking changes appear in red.**\n\nIf you would like to monitor those changes, an RSS feed is available at: [`changes.rss`](/changes.rss)"
     }
   },
 
@@ -80,6 +74,18 @@
         {
           "route" : ["guides"],
           "label" : "Guides"
+        },
+
+        {
+          "route"    : ["references"],
+          "label"    : "References",
+
+          "dropdown" : [
+            {
+              "route" : ["pod-api", "v1"],
+              "label" : "Pod API Reference"
+            }
+          ]
         }
       ],
 
@@ -156,8 +162,19 @@
 
         "actions"     : [
           {
-            "route" : ["guides", "hello-world"],
+            "route" : ["guides"],
             "label" : "Introduction"
+          }
+        ]
+      },
+
+      "references" : {
+        "description" : "In-depth technical references of all available APIs.",
+
+        "actions"     : [
+          {
+            "route" : ["references", "pod-api", "v1"],
+            "label" : "Pod API"
           }
         ]
       }
