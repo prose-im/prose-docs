@@ -16,7 +16,7 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v1
         with:
-          node-version: 14.x
+          node-version: 12.x
 
       - name: Verify versions
         run: node --version && npm --version && node -p process.versions.v8
@@ -41,5 +41,6 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+          AWS_EC2_METADATA_DISABLED: true
         run: |
           aws s3 sync --delete --endpoint-url ${{ secrets.S3_ENDPOINT }} build/ s3://${{ secrets.S3_BUCKET }}/${{ secrets.S3_SITE_DOMAIN }}/

@@ -4,7 +4,7 @@
     "type"  : "change",
     "date"  : "2021-12-03",
 
-    "text"  : "New official REST API libraries have been added for Golang and Java."
+    "text"  : "New official REST API libraries have been added for Go and Java."
   },
 
   {
