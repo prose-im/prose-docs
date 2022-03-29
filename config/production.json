@@ -10,13 +10,13 @@
       "sizes" : {
         "references" : {
           "pages" : {
-            "gzip_maximum" : 80000
+            "gzip_maximum" : 50000
           }
         },
 
         "guides" : {
           "pages" : {
-            "gzip_maximum" : 25000
+            "gzip_maximum" : 20000
           },
 
           "images" : {
@@ -26,8 +26,8 @@
 
         "data" : {
           "objects" : {
-            "maximum"      : 140000,
-            "gzip_maximum" : 25000
+            "maximum"      : 100000,
+            "gzip_maximum" : 20000
           }
         }
       }
