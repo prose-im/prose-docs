@@ -1,6 +1,7 @@
 on:
   push:
     branches:
+      - master
       - production
 
 name: Build and Deploy
