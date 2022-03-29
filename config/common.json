@@ -1,7 +1,7 @@
 {
   "identity" : {
-    "title"     : "Acme Developer Hub",
-    "copyright" : "Acme Inc."
+    "title"     : "Prose Server Docs",
+    "copyright" : "Prose Foundation"
   },
 
   "theme" : {
@@ -12,7 +12,7 @@
   },
 
   "urls" : {
-    "base" : "https://docs.acme.com"
+    "base" : "https://docs.prose.org"
   },
 
   "favicons" : {
@@ -80,8 +80,8 @@
 
   "texts" : {
     "home" : {
-      "title" : "Welcome to the Acme Developer Hub",
-      "label" : "Build apps for 10M+ Acme app users."
+      "title" : "Welcome to the Prose Server Docs",
+      "label" : "Guides how to setup & manage a Prose XMPP server."
     },
 
     "changes" : {
@@ -92,12 +92,12 @@
       },
 
       "titles" : {
-        "feed"   : "Acme Platform Changes",
+        "feed"   : "Prose Platform Changes",
         "latest" : "Latest Platform Changes",
         "year"   : "Platform Changes In"
       },
 
-      "notice" : "**The Acme Platform is updated every day with improvements and new features.** This page is a ledger of all notable changes that occured over time, and which may impact your integrations.\n\n**Note that breaking changes appear in red.**\n\nIf you would like to monitor those changes, an RSS feed is available at: [`changes.rss`](/changes.rss)"
+      "notice" : "**The Prose Platform is updated every day with improvements and new features.** This page is a ledger of all notable changes that occured over time, and which may impact your integrations.\n\n**Note that breaking changes appear in red.**\n\nIf you would like to monitor those changes, an RSS feed is available at: [`changes.rss`](/changes.rss)"
     }
   },
 
@@ -129,19 +129,19 @@
 
       "actions" : [
         {
-          "label"    : "Sign Up",
+          "label"    : "More Help",
 
           "dropdown" : [
             {
-              "title"    : "Sign Up to Acme",
-              "subtitle" : "Create your Acme user account.",
-              "target"   : "https://dashboard.acme.com/"
+              "title"    : "Prose Website",
+              "subtitle" : "Go back to the Prose website.",
+              "target"   : "https://prose.org/"
             },
 
             {
-              "title"    : "Sign Up to Developer Center",
-              "subtitle" : "Start building Acme integrations.",
-              "target"   : "https://developers.acme.com/"
+              "title"    : "Prose Help Center",
+              "subtitle" : "Get help with using Prose as a user.",
+              "target"   : "https://help.prose.org/"
             }
           ]
         }
@@ -151,28 +151,23 @@
     "footer" : {
       "navigation" : [
         {
-          "label"  : "Acme Website",
-          "target" : "https://acme.com/"
+          "label"  : "Prose Website",
+          "target" : "https://prose.org/"
         },
 
         {
           "label"  : "Terms of Use",
-          "target" : "https://acme.com/terms/"
+          "target" : "https://prose.org/terms/"
         },
 
         {
-          "label"  : "Privacy Policy",
-          "target" : "https://acme.com/privacy/"
+          "label"  : "Changelog",
+          "target" : "https://prose.org/changelog/"
         },
 
         {
-          "label"  : "About Us",
-          "target" : "https://acme.com/about/"
-        },
-
-        {
-          "label"  : "Read our Blog",
-          "target" : "https://blog.acme.com/"
+          "label"  : "Contact Us",
+          "target" : "https://prose.org/contact/"
         }
       ]
     }
@@ -182,7 +177,7 @@
     "home" : [
       {
         "route" : ["guides"],
-        "label" : "Build your First Acme App"
+        "label" : "Setup your Prose server"
       }
     ]
   },
@@ -190,7 +185,7 @@
   "bulletpoints" : {
     "home" : {
       "quickstart" : {
-        "description" : "Start building on the top of the Acme Platform in a matter of minutes.",
+        "description" : "Start building on the top of the Prose Platform in a matter of minutes.",
 
         "actions"     : [
           {
@@ -201,7 +196,7 @@
       },
 
       "guides" : {
-        "description" : "Guides & tutorials on how to integrate Acme with your systems.",
+        "description" : "Guides & tutorials on how to integrate Prose with your systems.",
 
         "actions"     : [
           {
@@ -217,7 +212,7 @@
       },
 
       "references" : {
-        "description" : "In-depth technical references of all available Acme APIs.",
+        "description" : "In-depth technical references of all available Prose APIs.",
 
         "actions"     : [
           {
@@ -234,74 +229,13 @@
     }
   },
 
-  "includes" : {
-    "scripts" : {
-      "urls"   : [],
-      "inline" : []
-    },
-
-    "stylesheets" : {
-      "urls"   : [],
-      "inline" : []
-    }
-  },
-
-  "tokens" : {
-    "crisp_website_id" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-  },
-
   "plugins" : {
     "code" : {
       "syntaxes" : [
-        "markup",
-        "markup-templating",
-        "css",
         "clike",
         "c",
-        "javascript",
-        "bash",
-        "go",
-        "java",
-        "groovy",
-        "json",
-        "php",
-        "python",
-        "ruby",
-        "rust",
-        "swift",
-        "objectivec"
+        "bash"
       ]
-    }
-  },
-
-  "rules" : {
-    "build_size" : {
-      "fail"  : true,
-
-      "sizes" : {
-        "references" : {
-          "pages" : {
-            "gzip_maximum" : 80000
-          }
-        },
-
-        "guides" : {
-          "pages" : {
-            "gzip_maximum" : 25000
-          },
-
-          "images" : {
-            "maximum" : 500000
-          }
-        },
-
-        "data" : {
-          "objects" : {
-            "maximum"      : 140000,
-            "gzip_maximum" : 25000
-          }
-        }
-      }
     }
   }
 }
