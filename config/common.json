@@ -6,8 +6,8 @@
 
   "theme" : {
     "accent" : {
-      "base"   : "#2275f1",
-      "active" : "#0f69ef"
+      "base"   : "#2b255d",
+      "active" : "#27215b"
     }
   },
 
@@ -36,19 +36,6 @@
       "header_full"  : "images/logos/logo-header-full.svg",
       "header_short" : "images/logos/logo-header-short.svg",
       "footer"       : "images/logos/logo-footer.svg"
-    },
-
-    "categories" : {
-      "guides" : {
-        "hello-world"     : "images/categories/guides/hello-world.svg",
-        "markdown-syntax" : "images/categories/guides/markdown-syntax.svg"
-      },
-
-      "references" : {
-        "rest-api" : "images/categories/references/rest-api.svg",
-        "rtm-api"  : "images/categories/references/rtm-api.svg",
-        "team"     : "images/categories/references/team.svg"
-      }
     }
   },
 
@@ -64,16 +51,6 @@
 
       "footer"       : {
         "width" : 84
-      }
-    }
-  },
-
-  "colors" : {
-    "changes" : {
-      "groups" : {
-        "rest_api"  : "#d34040",
-        "rtm_api"   : "#dc9b37",
-        "web_hooks" : "#1a71f5"
       }
     }
   },
@@ -107,23 +84,6 @@
         {
           "route" : ["guides"],
           "label" : "Guides"
-        },
-
-        {
-          "route"    : ["references"],
-          "label"    : "References",
-
-          "dropdown" : [
-            {
-              "route" : ["rest-api", "v1"],
-              "label" : "REST API Reference"
-            },
-
-            {
-              "route" : ["rtm-api", "v1"],
-              "label" : "RTM API Reference"
-            }
-          ]
         }
       ],
 
@@ -202,27 +162,6 @@
           {
             "route" : ["guides", "hello-world"],
             "label" : "Introduction"
-          },
-
-          {
-            "route" : ["guides", "markdown-syntax", "syntax"],
-            "label" : "Markdown Syntax"
-          }
-        ]
-      },
-
-      "references" : {
-        "description" : "In-depth technical references of all available Prose APIs.",
-
-        "actions"     : [
-          {
-            "route" : ["references", "rest-api", "v1"],
-            "label" : "REST API"
-          },
-
-          {
-            "route" : ["references", "rtm-api", "v1"],
-            "label" : "RTM API"
           }
         ]
       }
