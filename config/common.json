@@ -38,15 +38,15 @@
   "dimensions" : {
     "logos" : {
       "header_full"  : {
-        "width" : 136
+        "width" : 133
       },
 
       "header_short" : {
-        "width" : 46
+        "width" : 20
       },
 
       "footer"       : {
-        "width" : 84
+        "width" : 89
       }
     }
   },
