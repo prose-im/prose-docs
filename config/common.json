@@ -40,6 +40,12 @@
       "header_full"  : "images/logos/logo-header-full.svg",
       "header_short" : "images/logos/logo-header-short.svg",
       "footer"       : "images/logos/logo-footer.svg"
+    },
+
+    "categories" : {
+      "references" : {
+        "pod-api" : "images/categories/references/pod-api.svg"
+      }
     }
   },
 
