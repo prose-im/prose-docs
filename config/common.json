@@ -6,13 +6,21 @@
 
   "theme" : {
     "accent" : {
-      "base"   : "#2b255d",
-      "active" : "#322b6a"
+      "light" : {
+        "base"   : "#2b255d",
+        "active" : "#322b6a"
+      },
+
+      "dark" : {
+        "base"   : "#ffffff",
+        "active" : "#eeeeee"
+      }
     }
   },
 
   "urls" : {
-    "base" : "https://docs.prose.org"
+    "base"         : "https://docs.prose.org",
+    "crisp_status" : "https://status.prose.org"
   },
 
   "favicons" : {
