@@ -1,6 +1,6 @@
 {
   "identity" : {
-    "title"     : "Prose Server Docs",
+    "title"     : "Prose Documentation",
     "copyright" : "Prose Foundation"
   },
 
@@ -67,8 +67,8 @@
 
   "texts" : {
     "home" : {
-      "title" : "Welcome to the Prose Server Docs",
-      "label" : "Guides how to setup & manage a Prose XMPP server."
+      "title" : "Welcome to the Prose Documentation",
+      "label" : "Guides how to start using Prose and setup your own Prose Pod server."
     },
 
     "changes" : {
@@ -152,8 +152,8 @@
   "actions" : {
     "home" : [
       {
-        "route" : ["guides"],
-        "label" : "Setup your Prose server"
+        "route" : ["guides", "start"],
+        "label" : "Get Started with Prose"
       }
     ]
   },
@@ -161,23 +161,28 @@
   "bulletpoints" : {
     "home" : {
       "quickstart" : {
-        "description" : "Start building on the top of the Prose Platform in a matter of minutes.",
+        "description" : "Setup Prose for your team in a matter of minutes.",
 
         "actions"     : [
           {
-            "route" : ["guides"],
-            "label" : "Start building"
+            "route" : ["guides", "start"],
+            "label" : "Start with Prose"
           }
         ]
       },
 
       "guides" : {
-        "description" : "Guides & tutorials on how to integrate Prose with your systems.",
+        "description" : "Guides on how to manage your Prose Pod server, and more.",
 
         "actions"     : [
           {
-            "route" : ["guides"],
-            "label" : "Introduction"
+            "route" : ["guides", "server"],
+            "label" : "Server Setup"
+          },
+
+          {
+            "route" : ["guides", "others", "security"],
+            "label" : "Security"
           }
         ]
       },
