@@ -2,7 +2,7 @@ TITLE: Guides
 INDEX: 1
 UPDATED: 2022-03-29
 
-**👋 Welcome to the Prose Server Docs!** We have written extensive guides to help you setup your Prose server.
+**👋 Welcome to the Prose Technical Docs!** We have written extensive guides to help you setup your Prose server.
 
 + Navigation
   | Start There: Willing to use Prose? Start from there. -> ./start/
