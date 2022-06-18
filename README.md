@@ -1,6 +1,6 @@
 # prose-docs
 
-[![Build and Deploy](https://github.com/prose-im/prose-docs/workflows/Build%20and%20Deploy/badge.svg?branch=production)](https://github.com/prose-im/prose-docs/actions/workflows/deploy.yml)
+[![Build and Deploy](https://github.com/prose-im/prose-docs/actions/workflows/deploy.yml/badge.svg?branch=production)](https://github.com/prose-im/prose-docs/actions/workflows/deploy.yml)
 
 **Prose Technical Docs, used by Prose server administrators.**
 
