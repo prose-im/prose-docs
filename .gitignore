@@ -1,10 +1,19 @@
-.DS_Store
-Thumbs.db
+# NPM
 npm-debug.log
-
 node_modules/
+.npm
 
-.chappe/*
+# Builds
 build/*
 
+# Chappe
+.chappe/*
+
+# Editor
+.nova
+
+# macOS
+.DS_Store
+
+# Configuration
 config/local.json
