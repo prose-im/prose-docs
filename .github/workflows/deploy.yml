@@ -47,9 +47,7 @@ jobs:
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
-        env:
-          GIT_REV: ${{ GITHUB_SHA::7 }}
         with:
-          name: ${{ GIT_REV }} Build
+          name: ${{ GITHUB_SHA::7 }} Build
           path: ./build/
           retention-days: 7
