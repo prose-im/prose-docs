@@ -44,3 +44,12 @@ jobs:
           AWS_EC2_METADATA_DISABLED: true
         run: |
           aws s3 sync --delete --endpoint-url ${{ secrets.S3_ENDPOINT }} build/ s3://${{ secrets.S3_BUCKET }}/${{ secrets.S3_SITE_DOMAIN }}/
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        env:
+          GIT_REV: ${{ GITHUB_SHA::7 }}
+        with:
+          name: ${{ GIT_REV }} Build
+          path: ./build/
+          retention-days: 7
