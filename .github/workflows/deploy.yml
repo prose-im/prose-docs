@@ -53,5 +53,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ steps.current_revision.outputs.short }} Build
-          path: ./build/
+          path: build/
           retention-days: 7
