@@ -1,6 +1,6 @@
 {
   "identity" : {
-    "title"     : "Prose Documentation",
+    "title"     : "Prose Technical Docs",
     "copyright" : "Prose Foundation"
   },
 
@@ -72,7 +72,7 @@
 
   "texts" : {
     "home" : {
-      "title" : "Welcome to the Prose Documentation",
+      "title" : "Welcome to the Prose Technical Docs",
       "label" : "Guides how to start using Prose and setup your own Prose Pod server."
     },
 
