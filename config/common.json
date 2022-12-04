@@ -47,6 +47,10 @@
       "footer"       : "images/logos/logo-footer.svg"
     },
 
+    "metas" : {
+      "opengraph" : "images/metas/opengraph.png"
+    },
+
     "categories" : {
       "references" : {
         "pod-api" : "images/categories/references/pod-api.svg"
