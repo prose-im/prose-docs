@@ -65,11 +65,11 @@
       },
 
       "header_short" : {
-        "width" : 20
+        "width" : 24
       },
 
       "footer"       : {
-        "width" : 89
+        "width" : 77
       }
     }
   },
