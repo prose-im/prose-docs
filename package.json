@@ -1,5 +1,5 @@
 {
-  "name": "prose-docs",
+  "name": "@prose-im/prose-docs",
   "description": "Prose Technical Docs",
   "version": "1.0.0",
   "homepage": "https://github.com/prose-im/prose-docs",
@@ -7,7 +7,8 @@
   "private": true,
   "engineStrict": true,
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">= 20",
+    "npm": ">= 9"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,6 @@
     "build": "./tools/build.sh"
   },
   "devDependencies": {
-    "chappe": "1.9.2"
+    "chappe": "1.9.3"
   }
 }
