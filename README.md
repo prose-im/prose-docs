@@ -6,6 +6,8 @@
 
 Copyright 2022, Prose Foundation.
 
+_Tested at NodeJS version: `v20.5.0`_
+
 ## Clone Instructions
 
 As this project uses Git LFS to store large files (ie. PNG, JPG and GIF files from guides), it requires Git LFS to be available on the system cloning this repository.
