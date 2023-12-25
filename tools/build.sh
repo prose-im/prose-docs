@@ -25,7 +25,7 @@ pushd "$BASE_DIR" > /dev/null
     config_path_all+=",$config_path_local"
   fi
 
-  ./node_modules/.bin/chappe build \
+  npm exec chappe build -- \
     --env="$cur_env" \
     --config="$config_path_all" \
     --assets="./res/assets" \
