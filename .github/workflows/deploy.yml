@@ -121,5 +121,6 @@ jobs:
         env:
           NOMAD_ADDR: ${{ vars.NOMAD_ADDR }}
           NOMAD_TOKEN: ${{ secrets.NOMAD_TOKEN }}
+          NOMAD_HTTP_AUTH: ${{ secrets.NOMAD_HTTP_AUTH }}
         run: |
           nomad var put -force nomad/jobs/prose-docs IMAGE_TAG=${{ needs.build.outputs.revision }}
