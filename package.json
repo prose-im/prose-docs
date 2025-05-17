@@ -23,6 +23,6 @@
     "build": "./tools/build.sh"
   },
   "devDependencies": {
-    "chappe": "1.9.4"
+    "chappe": "1.9.6"
   }
 }
