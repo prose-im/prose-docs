@@ -212,7 +212,10 @@
   "includes" : {
     "scripts" : {
       "urls" : [
-        "https://scripts.simpleanalyticscdn.com/latest.js"
+        {
+          "src"   : "https://scripts.simpleanalyticscdn.com/latest.js",
+          "async" : true
+        }
       ]
     },
 
