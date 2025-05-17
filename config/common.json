@@ -210,6 +210,12 @@
   },
 
   "includes" : {
+    "scripts" : {
+      "urls" : [
+        "https://scripts.simpleanalyticscdn.com/latest.js"
+      ]
+    },
+
     "stylesheets" : {
       "inline" : [
         "#home .illustration {\n  height: 210px !important;\n}\n\n#not_found .illustration {\n  height: 170px !important;\n}"
