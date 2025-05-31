@@ -1,8 +1,8 @@
-TITLE: Others
-INDEX: 3
-UPDATED: 2022-05-11
+TITLE: Other guides
+INDEX: 4
+UPDATED: 2025-05-22
 
-**🚧 This guide is still a work-in-progress.**
+!!! 🚧 This guide is still a work-in-progress.
 
 + Navigation
   | Security: Read how Prose security and encryption works. -> ./security/
