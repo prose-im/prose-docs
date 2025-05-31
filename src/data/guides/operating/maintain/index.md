@@ -1,6 +1,6 @@
 TITLE: Maintaining a Prose Pod
 INDEX: 2
-UPDATED: 2025-05-28
+UPDATED: 2025-05-31
 
 !!! 🚧 This guide is still a work-in-progress.
 
@@ -14,4 +14,10 @@ Update your `compose.yaml` file using:
 
 ```bash
 curl -LO https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/tags/${PROSE_VERSION:?}/compose.yaml
+```
+
+Then restart using:
+
+```bash
+docker compose up -d --force-recreate
 ```

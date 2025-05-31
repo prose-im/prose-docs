@@ -1,6 +1,6 @@
 TITLE: Deploying a Prose Pod
 INDEX: 1
-UPDATED: 2025-05-29
+UPDATED: 2025-05-31
 
 ## Context: The architecture of a Prose Pod
 
@@ -76,7 +76,7 @@ Once done, edit the file to replace all placeholders with your company informati
 
 #### SSL certificates
 
-!!! TODO: @valerian Please write this section
+!!! TODO: @valerian Please write this section. We need certificates in Prosody but also to access the Dashboard in HTTPS.
 
 ### Step 2: Run your Prose Pod
 
@@ -138,9 +138,35 @@ If the logs you see still don’t guide you to a solution, [reach out to our tec
 
 Now that your Prose Pod is running, you need to create the first admin account, configure your DNS records and invite your first colleague. All of this can be done using the administration Dashboard which is accessible at `http://localhost:3030`.
 
-Your Prose Pod still needs a bit of configuration and [“Initializing your workspace” section of the “Quickstart” guide](/guides/basics/quickstart/#initializing-your-workspace)
+!! Those steps could also be done using the Prose Pod API directly but it’s pretty advanced and subject to changes so we won’t document it here. However, if you are interested in doing so you can [reach out to our technical support team](#crisp-chat-open) which will guide you into using the Pod API.
 
-All of those steps could also be done using the Prose Pod API directly but it’s pretty advanced and subject to changes so we won’t document it here. However, if you are interested in doing so you can [reach out to our technical support team](#crisp-chat-open) which will guide you into using the Pod API.
+However, you very likely don’t have access to a web browser on the machine where you are running the Prose Pod so you will have to create a first DNS record in order for you to access the Dashboard from your own web browser.
+
+If your server has a public IP address, add the following records to your DNS zone (replacing `{ipv4}` and `{ipv6}` by your server’s IPv4 and IPv6 addresses):
+
+```txt
+prose 10800 IN A    {ipv4}
+prose 10800 IN AAAA {ipv6}
+```
+
+! If your server only has an IPv4 or IPv6, add only the appropriate record.
+
+If your server is already accessible via a hostname, add this `CNAME` record to your DNS zone instead (replacing `{hostname}` by your server’s public hostname):
+
+```txt
+prose 10800 IN CNAME {hostname}
+```
+
+! You can change `prose` to something else, it’s not hard-coded anywhere on our side, but beware that our guides will assume you used this value so you’ll have to change it everywhere we mention `prose.{your_domain}`.
+
+Now, or after a few minutes (for your DNS provider to propagate the new records), you should be able to open `https://prose.{your_domain}:3030` in your web browser and see your Prose Pod Dashboard. If you get a SSL error, go back to [the “SSL certificates” section](#ssl-certificates) and make sure everything is correct.
+
+! If you can’t access your Dashboard at this point, feel free to [contact our technical support team](#crisp-chat-open) which will gladly help you fix your configuration.
+
+Now that you have access to your Dashboard, you can follow [the “Initializing your workspace” section of the “Quickstart” guide](/guides/basics/quickstart/#initializing-your-workspace) to finish configuring your Prose Pod.
+
++ Navigation
+  | Initializing your workspace: Finish configuring your Prose Pod using the Dashboard. -> /guides/basics/quickstart/#initializing-your-workspace
 
 [Prose Pod Server]: https://github.com/prose-im/prose-pod-server "prose-im/prose-pod-server on GitHub"
 [Prose Pod API]: https://github.com/prose-im/prose-pod-api "prose-im/prose-pod-api on GitHub"

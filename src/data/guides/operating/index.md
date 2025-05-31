@@ -10,6 +10,7 @@ Want to host a Prose Pod instance yourself? Here are all the guides you need to
   | Deploying a Prose Pod: A step-by-step guide explaining how to self-host a Prose Pod. -> ./deploy/
   | Maintaining a Prose Pod: Configuration, updates, migrations… -> ./maintain/
   | Debugging a Prose Pod: For when something’s wrong with your Prose Pod. -> ./debug/
+  | Telemetry: Enable telemetry for your Prose Pod. -> ./telemetry/
 
 ## References
 

@@ -1,6 +1,8 @@
 TITLE: Quickstart
 INDEX: 1
-UPDATED: 2025-05-28
+UPDATED: 2025-05-31
+
+!!! 🚧 This guide is still a work-in-progress.
 
 ## Creating a Prose workspace
 
@@ -10,13 +12,13 @@ To create a Prose workspace, the easiest solution is to use our Cloud-hosted ser
 
 + Navigation
   | Prose Cloud: The easiest way to use Prose in your company. -> https://prose.org/cloud/signup/
-  | Self-hosted (Community): Want to host a Prose Pod youself? Read this guide. -> /guides/operating/
+  | Self-hosted (Community): Want to host a Prose Pod youself? Read this guide. -> /guides/operating/deploy/
 
 ## Initializing your workspace
 
 !!! TODO: @valerian Where does the user get the URL to their Dashboard in the Cloud version?
 
-Once we’ve created your workspace, we’ll give you a link to your admin dashboard. The first time you open it, you will will be guided through a quick initialization process. This section walks you through it.
+Once we’ve created your workspace, we’ll give you a link to your admin dashboard. The first time you open it, you will be guided through a quick initialization process. This section walks you through it.
 
 ### Server domain
 
@@ -107,7 +109,7 @@ To do so, open “Team Members” > “Members & Invites” then click “Add a 
 <details>
   <summary>Click to show an example screenshot</summary>
 
-$[TODO](![TODO](/static/user/images/screenshots/dashboard/invite-member-fresh.png))
+$[“Invite a team member” screen](![“Invite a team member” screen](/static/user/images/screenshots/dashboard/invite-member-fresh.png))
 
 </details>
 

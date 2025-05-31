@@ -127,12 +127,6 @@ Know that you might break your Prose Pod by changing those, we don’t guarante
 | `federation_friendly_servers` | `Vec<String>` | If a whitelist is defined, then other servers will not be allowed to connect to this server, except whitelisted ones. It is recommended to whitelist servers you typically work with, i.e. other teams. | `[]` |
 | `push_notification_with_body` | `bool` | Whether or not to send the real message body to the remote pubsub node. Without end-to-end encryption, enabling this may expose your message contents to your client developers and OS vendor. Not recommended. | `false` |
 | `push_notification_with_sender` | `bool` | Whether or not to send the real message sender to the remote pubsub node. Enabling this may expose your contacts to your client developers and OS vendor. Not recommended. | `false` |
-| `mfa_required` | `bool` | Require Multi-Factor Authentication.\*\* | `true` |
-| `settings_backup_interval` | `String` | Settings backup interval.\*\* | `"P1D"` |
-| `user_data_backup_interval` | `String` | User data backup interval.\*\* | `"P1W"` |
-| `file_storage_encryption_scheme` | `String` | File storage encryption scheme.\*\* | `"AES-256"` |
-
-\*\* Not yet implemented, but you can still add the default configuration key now to have it working right away.
 
 ### ProsodyExtConfig
 
