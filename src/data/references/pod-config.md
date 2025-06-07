@@ -65,6 +65,7 @@ Know that you might break your Prose Pod by changing those, we don’t guarante
 | --- | ---- | ----------- | ------- |
 | `databases` | [`DatabasesConfig`](#databasesconfig) | Where you can configure internal Prose Pod API databases. | See [below](#databasesconfig) |
 | `bootstrap` | [`BootstrapConfig`](#bootstrapconfig) | Bootstrap configuration. | See [below](#bootstrapconfig) |
+| `auth` | [`AuthConfig`](#authconfig) | Authentication & authorization configuration. | See [below](#authconfig) |
 | `server` | [`ServerConfig`](#serverconfig) | Server configuration. | See [below](#serverconfig) |
 | `prosody` | [`ProsodySettings`](#prosodysettings) | Base Prosody configuration. | - |
 | `prosody_ext` | [`ProsodyExtConfig`](#prosodyextconfig) | Prosody extension configuration. | See [below](#prosodyextconfig) |
@@ -86,7 +87,7 @@ Know that you might break your Prose Pod by changing those, we don’t guarante
 | --- | ---- | ----------- | ------- |
 | `url` | URI | Database URL. | `"sqlite:///var/lib/prose-pod-api/database.sqlite"` |
 | `min_connections` | `Option<u32>` | Minimum number of connections. | `None` |
-| `max_connections` | `usize` | Maximum number of connections. | parallelism capacity \* 4 |
+| `max_connections` | `usize` | Maximum number of connections. | Parallelism capacity \* 4 |
 | `connect_timeout` | `u64` (seconds) | Connection acquiring timeout. | `5` |
 | `idle_timeout` | `Option<u64>` | Idle connection timeout. | `None` |
 | `sqlx_logging` | `bool` | Enable [sqlx](https://docs.rs/sqlx/latest/sqlx/) logging. | `false` |
@@ -98,6 +99,14 @@ Know that you might break your Prose Pod by changing those, we don’t guarante
 | `prose_pod_api_xmpp_password` | `String` | Bootstrap XMPP password for the Prose Pod API service account.\*\* | `"bootstrap"` |
 
 \*\* [The first thing the Prose Pod API does](https://github.com/prose-im/prose-pod-api/blob/c02f938161f134289a0c2e07f9ccc67dc97848a2/src/rest-api/src/features/startup_actions/mod.rs#L47) when starting up is changing this password to [a very strong random password](https://github.com/prose-im/prose-pod-api/blob/c02f938161f134289a0c2e07f9ccc67dc97848a2/src/service/src/features/xmpp/server_manager.rs#L116-L126), so you shouldn’t have a reason to change it (see [Provide a default bootstrap password · Issue #246 · prose-im/prose-pod-api](https://github.com/prose-im/prose-pod-api/issues/246)).
+
+### AuthConfig
+
+| Key | Kind | Description | Default |
+| --- | ---- | ----------- | ------- |
+| `token_ttl` | [Duration](#duration) | How long sessions are valid for (how often members need to log into the Dashboard again). Note that this only affects the Dashboard, not Prose apps. | `"PT3H"` (3 hours) |
+| `password_reset_token_ttl` | [Duration](#duration) | How long password reset links are valid for. | `"PT15M"` (15 minutes) |
+| `oauth2_registration_key` | `String` | OAuth 2.0 registration key. | Random 256-byte key |
 
 ### ServerConfig
 
