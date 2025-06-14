@@ -1,6 +1,8 @@
 TITLE: Deploying a Prose Pod
 INDEX: 1
-UPDATED: 2025-06-14
+UPDATED: 2025-06-15
+
+!!! 🚧 This guide is still a work-in-progress.
 
 ## Context: The architecture of a Prose Pod
 
@@ -107,7 +109,7 @@ Once done, edit the file to replace all placeholders with your company informati
 3. Request a SSL certificate for your server:
 
    ```bash
-   certbot --nginx -d prose.${YOUR_DOMAIN:?} -d admin.prose.${YOUR_DOMAIN:?}
+   certbot --nginx -d prose.${YOUR_DOMAIN:?} -d admin.prose.${YOUR_DOMAIN:?} -d groups.prose.${YOUR_DOMAIN:?}
    ```
 
    Note that certbot should have automatically created `/etc/cron.d/certbot` to handle certificates renewal.
@@ -140,15 +142,15 @@ Once done, edit the file to replace all placeholders with your company informati
 4. certbot certificates are stored in `/etc/letsencrypt/live`, but Prosody will search in `/etc/prosody/certs`. Normally we’d use `prosodyctl --root cert import /etc/letsencrypt/live` (as explained in [Let’s Encrypt – Prosody IM](https://prosody.im/doc/letsencrypt)), but Prose runs Prosody in a dedicated container therefore your server doesn’t have access to `prosodyctl` (and we can’t use symbolic links). Here is one way to copy the certificates manually:
 
    ```bash
-   rsync -a /etc/{letsencrypt/live,prosody/certs}/
+   rsync -aL --chown=prose:prose /etc/{letsencrypt/live,prosody/certs}/
    ```
 
-   ! **Tip:** If you manage multiple certificates and want Prosody to only see the one you use for Prose, you can use `rsync -a /etc/{letsencrypt/live,prosody/certs}/prose.${YOUR_DOMAIN:?}/` instead.
+   ! **Tip:** If you manage multiple certificates and want Prosody to only see the one you use for Prose, you can use `rsync -aL --chown=prose:prose /etc/{letsencrypt/live,prosody/certs}/prose.${YOUR_DOMAIN:?}/` instead.
 
-5. certbot should have automatically created `/etc/cron.d/certbot` to handle certificates renewal, but you still have to add a certbot renewal hook to update Prosody certificates when certificates are renewed. For this, assign the command you executed previously in as `post_hook` under `[renewalparams]` in `/etc/letsencrypt/renewal/prose.{your_domain}.conf`. For example, if you used `rsync -a /etc/{letsencrypt/live,prosody/certs}/` you should set:
+5. certbot should have automatically created `/etc/cron.d/certbot` to handle certificates renewal, but you still have to add a certbot renewal hook to update Prosody certificates when certificates are renewed. For this, assign the command you executed previously in as `post_hook` under `[renewalparams]` in `/etc/letsencrypt/renewal/prose.{your_domain}.conf`. For example, if you used `rsync -aL --chown=prose:prose /etc/{letsencrypt/live,prosody/certs}/` you should set:
 
    ```toml
-   post_hook = "/bin/bash -c 'rsync -a /etc/{letsencrypt/live,prosody/certs}/'"
+   post_hook = "/bin/bash -c 'rsync -aL --chown=prose:prose /etc/{letsencrypt/live,prosody/certs}/'"
    ```
 
 ### Step 2: Run your Prose Pod
@@ -191,11 +193,10 @@ If you want to use [Docker Compose](https://docs.docker.com/compose/) to deploy
 
 ! This section supposes you’re using [nginx](https://nginx.org/en/). If you use another reverse proxy, please update insctructions accordingly.
 
-[nginx-config-template in github.com/prose-im/prose-pod-system](https://github.com/prose-im/prose-pod-system/blob/master/nginx-config-template)
-
-curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/nginx-config-template -o /etc/nginx/sites-available/prose."${YOUR_DOMAIN:?}"
+[nginx-template.conf in github.com/prose-im/prose-pod-system](https://github.com/prose-im/prose-pod-system/blob/master/nginx-template.conf)
 
 ```bash
+curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/nginx-template.conf -o /etc/nginx/sites-available/prose."${YOUR_DOMAIN:?}"
 sed -i s/\{your_domain\}/"${YOUR_DOMAIN:?}"/g /etc/nginx/sites-available/prose."${YOUR_DOMAIN:?}"
 ln -s /etc/nginx/sites-{available,enabled}/prose."${YOUR_DOMAIN:?}"
 rm /etc/nginx/sites-enabled/default
@@ -220,20 +221,18 @@ If you get a JSON payload back containing information about the versions of you 
 To check for errors or warnings using Docker Compose, you can run:
 
 ```bash
-docker compose logs | grep -i -e 'error|warn'
+docker compose -f /etc/prose/compose.yaml logs | grep -i -e 'error|warn'
 ```
 
 If you don’t see the problem or are missing context, you should check *all* the logs using:
 
 ```bash
-docker compose logs
+docker compose -f /etc/prose/compose.yaml logs
 ```
 
 If the logs you see still don’t guide you to a solution, [reach out to our technical support team](#crisp-chat-open) which will gladly help you fix any issue you encounter.
 
 ### Step 4: Initializing your Prose Pod
-
-!!! TODO: One needs to configure DNS records manually before they can access the Dashboard from a computer with a GUI.
 
 Now that your Prose Pod is running, you need to create the first admin account, configure your DNS records and invite your first colleague. All of this can be done using the administration Dashboard which is accessible at `http://localhost:3030`.
 
@@ -244,8 +243,8 @@ However, you very likely don’t have access to a web browser on the machine whe
 If your server has a public IP address, add the following records to your DNS zone (replacing `{ipv4}` and `{ipv6}` by your server’s IPv4 and IPv6 addresses):
 
 ```txt
-prose 10800 IN A    {ipv4}
-prose 10800 IN AAAA {ipv6}
+admin.prose 10800 IN A    {ipv4}
+admin.prose 10800 IN AAAA {ipv6}
 ```
 
 ! If your server only has an IPv4 or IPv6, add only the appropriate record.
@@ -270,6 +269,7 @@ Now that you have access to your Dashboard, you can follow [the “Initializing 
   | Initializing your workspace: Finish configuring your Prose Pod using the Dashboard. -> /guides/basics/quickstart/#initializing-your-workspace
 
 [Prose Pod Server]: https://github.com/prose-im/prose-pod-server "prose-im/prose-pod-server on GitHub"
+[Prose Web application]: https://github.com/prose-im/prose-app-web "prose-im/prose-app-web on GitHub"
 [Prose Pod API]: https://github.com/prose-im/prose-pod-api "prose-im/prose-pod-api on GitHub"
 [Prose Pod Dashboard]: https://github.com/prose-im/prose-pod-dashboard "prose-im/prose-pod-dashboard on GitHub"
 [Prosody]: https://prosody.im/ "Prosody IM homepage"
