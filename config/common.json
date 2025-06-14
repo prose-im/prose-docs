@@ -241,7 +241,9 @@
         "bash",
         "yaml",
         "json",
-        "toml"
+        "toml",
+        "nginx",
+        "ini"
       ]
     }
   }

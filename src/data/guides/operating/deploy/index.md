@@ -1,22 +1,23 @@
 TITLE: Deploying a Prose Pod
 INDEX: 1
-UPDATED: 2025-05-31
+UPDATED: 2025-06-14
 
 ## Context: The architecture of a Prose Pod
 
 To begin with, let’s introduce you to the architecture of a Prose Pod, which will help you understand how things relate to one another.
 
-A Prose Pod consists of three parts:
+A Prose Pod consists of four parts:
 
 1. The [Prose Pod Server], running the [Prosody] XMPP server with additional modules for Prose requirements.
-2. The [Prose Pod API], which allows configuring the Server using a HTTP API.
-3. The [Prose Pod Dashboard], which exposes a Web UI one can use to configure a Server, invite members, manage authorization, etc.
+2. The [Prose Web application], which is a XMPP client accessible using a web browser.
+3. The [Prose Pod API], which allows configuring the Server using a HTTP API.
+4. The [Prose Pod Dashboard], which exposes a Web UI one can use to configure a Server, invite members, manage authorization, etc.
 
 ! In expert guides, Server, Pod API and Dashboard –with capital letters– respectively refer to the [Prose Pod Server](https://github.com/prose-im/prose-pod-server "prose-im/prose-pod-server on GitHub") the [Prose Pod API](https://github.com/prose-im/prose-pod-api "prose-im/prose-pod-api on GitHub") and the [Prose Pod Dashboard](https://github.com/prose-im/prose-pod-dashboard "prose-im/prose-pod-dashboard on GitHub"). While in beginner guides we might use “Prose workspace” or “Prose server” to refer to a Prose Pod for simplification purposes, here we will avoid those generic terms.
 
 ### The bootstrapping process
 
-For security reasons, your messaging data (stored in the Server) shouldn’t be readable by other parts of a Prose Pod[^mount]. The Prose Pod API fetches data from the Server using an authenticated network interface. As a consequence, the Pod API and the Server need to share a secret to bootstrap the connection. Since it is effectively a XMPP account password, we refer to it as the “bootstrap Prose Pod API XMPP password” or “bootstrap password” for short.
+For security reasons, your messaging data (stored in the Server) shouldn’t be readable by other parts of a Prose Pod. The Prose Pod API fetches data from the Server using an authenticated network interface. As a consequence, the Pod API and the Server need to share a secret to bootstrap the connection. Since it is effectively a XMPP account password, we refer to it as the “bootstrap Prose Pod API XMPP password” or “bootstrap password” for short.
 
 To make deployments easier, we defined a default bootstrap password, but rest assured that it doesn’t make your Prose Pod less secure. As stated in [Pod configuration reference > BootstrapConfig]: [The first thing the Prose Pod API does](https://github.com/prose-im/prose-pod-api/blob/c02f938161f134289a0c2e07f9ccc67dc97848a2/src/rest-api/src/features/startup_actions/mod.rs#L47) when starting up is changing this password to [a very strong random password](https://github.com/prose-im/prose-pod-api/blob/c02f938161f134289a0c2e07f9ccc67dc97848a2/src/service/src/features/xmpp/server_manager.rs#L116-L126), so you shouldn’t have a reason to change it (see [Provide a default bootstrap password · Issue #246 · prose-im/prose-pod-api](https://github.com/prose-im/prose-pod-api/issues/246)).
 
@@ -38,26 +39,42 @@ Here are all the directories a Prose Pod uses:
 And here are all the files you need to create and maintain:
 
 - `/etc/prose-pod-api/Prose.toml`: See the [Pod configuration reference](http://localhost:8040/references/pod-config/).
-- `/etc/prose/env`: If using our Compose file (see [Example: Compose](#example-compose) later), this is where you can configure environment variables for your Prose Pod.
+- `/etc/prose/prose.env`: If using our Compose file (see [Example: Compose](#example-compose) later), this is where you can configure environment variables for your Prose Pod.
 - `/etc/prosody/certs/*`: SSL certificates for your domain.
 
 ## Deployment steps
+
+### Step 0: A helper variable
+
+To copy-paste working commands from this guide, you should start by storing your domain as `YOUR_DOMAIN`:
+
+```bash
+YOUR_DOMAIN= # Insert your domain
+```
+
+### Step 0: Create the `prose` user
+
+For better isolation, you shouldn’t run Prose as root on your server. This guide uses a `prose` user that you should create using:
+
+```bash
+adduser --disabled-password --no-create-home --gecos 'Prose' prose
+```
 
 ### Step 1: Create required files and directories
 
 As detailed in [“Required files and directories”](#required-files-and-directories), Prose Pods require a certain amount of files and directories to exist. To create them, you can run:
 
 ```bash
-umask 027
-mkdir -p /var/lib/{prose-pod-api,prosody}
-mkdir -p /etc/{prose,prose-pod-api,prosody}
-mkdir -p /etc/prosody/certs
+install -o prose -g prose -m 750 -d \
+  /var/lib/{prose-pod-api,prosody} \
+  /etc/{prose,prose-pod-api,prosody} \
+  /etc/prosody/certs
 
+umask 027
 touch /var/lib/prose-pod-api/database.sqlite
-touch /etc/prose-pod-api/Prose.toml
 
 umask 077
-touch /etc/prose/env
+touch /etc/prose/prose.env
 ```
 
 #### `Prose.toml`
@@ -67,7 +84,7 @@ In order for your Prose Pod to run correctly, you need to write a few configura
 You can find an up-to-date template at [github.com/prose-im/prose-pod-system/blob/master/Prose-template.toml](https://github.com/prose-im/prose-pod-system/blob/master/Prose-template.toml), or directly download it using:
 
 ```bash
-curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/Prose-template.toml -O /etc/prose-pod-api/Prose.toml
+curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/Prose-template.toml -o /etc/prose-pod-api/Prose.toml
 ```
 
 Once done, edit the file to replace all placeholders with your company information.
@@ -76,7 +93,63 @@ Once done, edit the file to replace all placeholders with your company informati
 
 #### SSL certificates
 
-!!! TODO: @valerian Please write this section. We need certificates in Prosody but also to access the Dashboard in HTTPS.
+! This section supposes you’re using [nginx](https://nginx.org/en/). If you use another reverse proxy, please update insctructions accordingly.
+
+1. Install [certbot](https://certbot.eff.org/):
+
+   ```bash
+   apt update
+   apt install -y certbot python3-certbot-nginx
+   ```
+
+2. Ensure you have `A`/`AAAA` DNS records pointing to your server (so certbot can pass its SSL challenge).
+
+3. Request a SSL certificate for your server:
+
+   ```bash
+   certbot --nginx -d prose.${YOUR_DOMAIN:?} -d admin.prose.${YOUR_DOMAIN:?}
+   ```
+
+   Note that certbot should have automatically created `/etc/cron.d/certbot` to handle certificates renewal.
+
+   <details>
+       <summary>Click to show an example <code>/etc/cron.d/certbot</code></summary>
+
+   ```bash
+   # /etc/cron.d/certbot: crontab entries for the certbot package
+   #
+   # Upstream recommends attempting renewal twice a day
+   #
+   # Eventually, this will be an opportunity to validate certificates
+   # haven't been revoked, etc.  Renewal will only occur if expiration
+   # is within 30 days.
+   #
+   # Important Note!  This cronjob will NOT be executed if you are
+   # running systemd as your init system.  If you are running systemd,
+   # the cronjob.timer function takes precedence over this cronjob.  For
+   # more details, see the systemd.timer manpage, or use systemctl show
+   # certbot.timer.
+   SHELL=/bin/sh
+   PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+   0 */12 * * * root test -x /usr/bin/certbot -a \! -d /run/systemd/system && perl -e 'sleep int(rand(43200))' && certbot -q    renew --no-random-sleep-on-renew
+   ```
+
+   </details>
+
+4. certbot certificates are stored in `/etc/letsencrypt/live`, but Prosody will search in `/etc/prosody/certs`. Normally we’d use `prosodyctl --root cert import /etc/letsencrypt/live` (as explained in [Let’s Encrypt – Prosody IM](https://prosody.im/doc/letsencrypt)), but Prose runs Prosody in a dedicated container therefore your server doesn’t have access to `prosodyctl` (and we can’t use symbolic links). Here is one way to copy the certificates manually:
+
+   ```bash
+   rsync -a /etc/{letsencrypt/live,prosody/certs}/
+   ```
+
+   ! **Tip:** If you manage multiple certificates and want Prosody to only see the one you use for Prose, you can use `rsync -a /etc/{letsencrypt/live,prosody/certs}/prose.${YOUR_DOMAIN:?}/` instead.
+
+5. certbot should have automatically created `/etc/cron.d/certbot` to handle certificates renewal, but you still have to add a certbot renewal hook to update Prosody certificates when certificates are renewed. For this, assign the command you executed previously in as `post_hook` under `[renewalparams]` in `/etc/letsencrypt/renewal/prose.{your_domain}.conf`. For example, if you used `rsync -a /etc/{letsencrypt/live,prosody/certs}/` you should set:
+
+   ```toml
+   post_hook = "/bin/bash -c 'rsync -a /etc/{letsencrypt/live,prosody/certs}/'"
+   ```
 
 ### Step 2: Run your Prose Pod
 
@@ -91,16 +164,42 @@ To make deployments and updates easier, we maintain a [Compose file](https://doc
 If you want to use [Docker Compose](https://docs.docker.com/compose/) to deploy a Prose Pod, here are the steps you need to follow:
 
 1. Ensure you have [Docker](https://docs.docker.com/install) and [Docker Compose](https://docs.docker.com/compose/install/) installed and operational.
-2. Get the latest Compose file using:
+
+   ! **Tip:** If you don’t have it already, the easiest way to install Docker is to run `curl -L https://get.docker.com | sh`.
+
+2. Add the `prose` user to the `docker` group:
 
    ```bash
-   curl -LO https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/compose.yaml
+   usermod -aG docker prose
    ```
-3. Run your Prose Pod using:
+
+3. Get the [latest Compose file](https://github.com/prose-im/prose-pod-system/blob/master/compose.yaml) using:
 
    ```bash
-   docker compose up -d
+   curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/compose.yaml -o /etc/prose/compose.yaml
    ```
+4. Configure [systemd](https://systemd.io/) to run Prose at startup and run it:
+
+   ```bash
+   curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/prose.service -o /etc/systemd/system/prose.service
+   systemctl daemon-reload
+   systemctl enable prose.service
+   systemctl start prose.service
+   ```
+
+### Step 3: Configure the reverse proxy
+
+! This section supposes you’re using [nginx](https://nginx.org/en/). If you use another reverse proxy, please update insctructions accordingly.
+
+[nginx-config-template in github.com/prose-im/prose-pod-system](https://github.com/prose-im/prose-pod-system/blob/master/nginx-config-template)
+
+curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/nginx-config-template -o /etc/nginx/sites-available/prose."${YOUR_DOMAIN:?}"
+
+```bash
+sed -i s/\{your_domain\}/"${YOUR_DOMAIN:?}"/g /etc/nginx/sites-available/prose."${YOUR_DOMAIN:?}"
+ln -s /etc/nginx/sites-{available,enabled}/prose."${YOUR_DOMAIN:?}"
+rm /etc/nginx/sites-enabled/default
+```
 
 ### Step 3: Check that your Prose Pod is running correctly
 
@@ -164,6 +263,8 @@ Now, or after a few minutes (for your DNS provider to propagate the new records)
 ! If you can’t access your Dashboard at this point, feel free to [contact our technical support team](#crisp-chat-open) which will gladly help you fix your configuration.
 
 Now that you have access to your Dashboard, you can follow [the “Initializing your workspace” section of the “Quickstart” guide](/guides/basics/quickstart/#initializing-your-workspace) to finish configuring your Prose Pod.
+
+<!-- `certbot revoke --cert-name prose-test-1.remibardon.com --reason superseded` -->
 
 + Navigation
   | Initializing your workspace: Finish configuring your Prose Pod using the Dashboard. -> /guides/basics/quickstart/#initializing-your-workspace
