@@ -53,7 +53,8 @@
 
     "categories" : {
       "references" : {
-        "pod-api" : "images/categories/references/pod-api.svg"
+        "pod-api"    : "images/categories/references/pod-api.svg",
+        "pod-config" : "images/categories/references/pod-config.svg"
       }
     }
   },
@@ -105,8 +106,12 @@
 
           "dropdown" : [
             {
-              "route" : ["pod-api", "v1"],
+              "route" : ["pod-api"],
               "label" : "Pod API Reference"
+            },
+            {
+              "route" : ["pod-config"],
+              "label" : "Pod Configuration Reference"
             }
           ]
         }
@@ -174,7 +179,7 @@
 
         "actions"     : [
           {
-            "route" : ["guides", "start"],
+            "route" : ["guides", "basics", "quickstart"],
             "label" : "Start with Prose"
           }
         ]
@@ -185,7 +190,7 @@
 
         "actions"     : [
           {
-            "route" : ["guides", "server"],
+            "route" : ["guides", "operating"],
             "label" : "Server Setup"
           },
 
@@ -201,8 +206,12 @@
 
         "actions"     : [
           {
-            "route" : ["references", "pod-api", "v1"],
+            "route" : ["references", "pod-api"],
             "label" : "Pod API"
+          },
+          {
+            "route" : ["references", "pod-config"],
+            "label" : "Pod Config"
           }
         ]
       }
@@ -229,9 +238,12 @@
   "plugins" : {
     "code" : {
       "syntaxes" : [
-        "clike",
-        "c",
-        "bash"
+        "bash",
+        "yaml",
+        "json",
+        "toml",
+        "nginx",
+        "ini"
       ]
     }
   }
