@@ -59,7 +59,7 @@ YOUR_DOMAIN= # Insert your domain
 For better isolation, you shouldn’t run Prose as root on your server. This guide uses a `prose` user that you should create using:
 
 ```bash
-adduser --disabled-password --no-create-home --gecos 'Prose' prose
+adduser --uid 1001 --gid 1001 --disabled-password --no-create-home --gecos 'Prose' prose
 ```
 
 ### Step 1: Create required files and directories
@@ -72,11 +72,10 @@ install -o prose -g prose -m 750 -d \
   /etc/{prose,prose-pod-api,prosody} \
   /etc/prosody/certs
 
-umask 027
-touch /var/lib/prose-pod-api/database.sqlite
-
-umask 077
-touch /etc/prose/prose.env
+install -o prose -g prose -m 640 -T /dev/null \
+  /var/lib/prose-pod-api/database.sqlite
+install -o prose -g prose -m 600 -T /dev/null \
+  /etc/prose/prose.env
 ```
 
 #### `Prose.toml`
@@ -87,6 +86,7 @@ You can find an up-to-date template at [github.com/prose-im/prose-pod-system/blo
 
 ```bash
 curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/Prose-template.toml -o /etc/prose-pod-api/Prose.toml
+chown prose:prose /etc/prose-pod-api/Prose.toml
 ```
 
 Once done, edit the file to replace all placeholders with your company information.
@@ -101,7 +101,7 @@ Once done, edit the file to replace all placeholders with your company informati
 
    ```bash
    apt update
-   apt install -y certbot python3-certbot-nginx
+   apt install -y certbot
    ```
 
 2. Ensure you have `A`/`AAAA` DNS records pointing to your server (so certbot can pass its SSL challenge).
@@ -109,7 +109,7 @@ Once done, edit the file to replace all placeholders with your company informati
 3. Request a SSL certificate for your server:
 
    ```bash
-   certbot --nginx -d prose.${YOUR_DOMAIN:?} -d admin.prose.${YOUR_DOMAIN:?} -d groups.prose.${YOUR_DOMAIN:?}
+   certbot -d prose.${YOUR_DOMAIN:?} -d admin.prose.${YOUR_DOMAIN:?} -d groups.prose.${YOUR_DOMAIN:?}
    ```
 
    Note that certbot should have automatically created `/etc/cron.d/certbot` to handle certificates renewal.
@@ -179,14 +179,15 @@ If you want to use [Docker Compose](https://docs.docker.com/compose/) to deploy
 
    ```bash
    curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/compose.yaml -o /etc/prose/compose.yaml
+   chown prose:prose /etc/prose/compose.yaml
    ```
 4. Configure [systemd](https://systemd.io/) to run Prose at startup and run it:
 
    ```bash
    curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/prose.service -o /etc/systemd/system/prose.service
    systemctl daemon-reload
-   systemctl enable prose.service
-   systemctl start prose.service
+   systemctl enable prose
+   systemctl start prose
    ```
 
 ### Step 3: Configure the reverse proxy
@@ -196,10 +197,17 @@ If you want to use [Docker Compose](https://docs.docker.com/compose/) to deploy
 [nginx-template.conf in github.com/prose-im/prose-pod-system](https://github.com/prose-im/prose-pod-system/blob/master/nginx-template.conf)
 
 ```bash
+apt install -y nginx
+```
+
+```bash
 curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/nginx-template.conf -o /etc/nginx/sites-available/prose."${YOUR_DOMAIN:?}"
 sed -i s/\{your_domain\}/"${YOUR_DOMAIN:?}"/g /etc/nginx/sites-available/prose."${YOUR_DOMAIN:?}"
 ln -s /etc/nginx/sites-{available,enabled}/prose."${YOUR_DOMAIN:?}"
-rm /etc/nginx/sites-enabled/default
+```
+
+```bash
+systemctl reload nginx
 ```
 
 ### Step 3: Check that your Prose Pod is running correctly
