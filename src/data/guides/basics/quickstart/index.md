@@ -6,7 +6,7 @@ UPDATED: 2025-05-31
 
 ## Creating a Prose workspace
 
-To create a Prose workspace, the easiest solution is to use our Cloud-hosted service. It is fully managed (uptime & updates) and allows for unlimited members. If you want to deploy Prose on your own premises, you can use the Community version, but beware that it has a 100 members limit. For more information, head over to [our Pricing page](https://prose.org/pricing/ "Pricing | Prose IM").
+To create a Prose workspace, the easiest solution is to use our Cloud-hosted service. It is fully managed (uptime & updates) and allows for unlimited members. If you want to deploy Prose on your own premises, you can use the Community version, but beware that it has a 20 members limit. For more information, head over to [our Pricing page](https://prose.org/pricing/ "Pricing | Prose IM").
 
 !!! TODO: @valerian Is there a way to change “Read” in the navigation links and make it open in an external tab?
 
