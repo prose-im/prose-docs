@@ -10,4 +10,4 @@ UPDATED: 2025-05-22
   | Server Setup: Guides to help you setup your own Prose server. -> ./operating/
   | Other guides: Other guides are classified there. -> ./others/
 
-! If you have any technical question while setting up your Prose server, feel free to [chat with our support team](#crisp-chat-open). Our technical support team will gladly help you fix any issue you encounter.
+! If you have any technical question while setting up your Prose server, feel free to [chat with our support team](https://prose.org/contact/). Our technical support team will gladly help you fix any issue you encounter.

@@ -44,6 +44,8 @@ And here are all the files you need to create and maintain:
 - `/etc/prose/prose.env`: If using our Compose file (see [Example: Compose](#example-compose) later), this is where you can configure environment variables for your Prose Pod.
 - `/etc/prosody/certs/*`: SSL certificates for your domain.
 
+---
+
 ## Deployment steps
 
 ### Step 0: A helper variable
@@ -163,7 +165,7 @@ Once done, **edit the file to replace all placeholders** with your company infor
 
 To run a Prose Pod on your premises, you have to run all of its parts independently. Each is released as a Docker image, on Docker Hub (see [hub.docker.com/u/proseim](https://hub.docker.com/u/proseim)) and on GitHub’s Container Registry (see [github.com/orgs/prose-im/packages](https://github.com/orgs/prose-im/packages)).
 
-! If you have any technical question while setting up your Prose Pod, feel free to [chat with our technical support team](#crisp-chat-open) which will gladly help you fix any issue you encounter.
+! If you have any technical question while setting up your Prose Pod, feel free to [chat with our technical support team](https://prose.org/contact/) which will gladly help you fix any issue you encounter.
 
 #### Example: Run with Docker Compose
 
@@ -208,7 +210,7 @@ If you see one that has exited, check its logs using:
 docker compose -f /etc/prose/compose.yaml logs --no-log-prefix -- {service_name}
 ```
 
-! If the error logs aren’t clear enough, don’t hesitate [reaching out to our technical support team](#crisp-chat-open).
+! If the error logs aren’t clear enough, don’t hesitate [reaching out to our technical support team](https://prose.org/contact/).
 
 ### Step 4: Configure the reverse proxy
 
@@ -272,7 +274,7 @@ curl http://localhost:3030/api/pod/version
 
 If you get a JSON payload back containing information about the versions of you Prose Pod’s components, it means everything should be working correctly. If you want to make sure everything is well configured or if the call fails, you will have to check the logs.
 
-! If logs don’t guide you to a solution, feel free to [chat with our technical support team](#crisp-chat-open) which will gladly help you fix any issue you encounter.
+! If logs don’t guide you to a solution, feel free to [chat with our technical support team](https://prose.org/contact/) which will gladly help you fix any issue you encounter.
 
 #### Checking logs using Docker Compose
 
@@ -288,13 +290,13 @@ If you don’t see the problem or are missing context, you should check *all* th
 docker compose -f /etc/prose/compose.yaml logs
 ```
 
-If the logs you see still don’t guide you to a solution, [reach out to our technical support team](#crisp-chat-open) which will gladly help you fix any issue you encounter.
+If the logs you see still don’t guide you to a solution, [reach out to our technical support team](https://prose.org/contact/) which will gladly help you fix any issue you encounter.
 
 ### Step 7: Initializing your Prose Pod
 
 Now that your Prose Pod is running, you need to create the first admin account, configure your DNS records and invite your first colleague. All of this can be done using the administration Dashboard which is accessible at `http://localhost:3030`.
 
-!! Those steps could also be done using the Prose Pod API directly but it’s pretty advanced and subject to changes so we won’t document it here. However, if you are interested in doing so you can [reach out to our technical support team](#crisp-chat-open) which will guide you into using the Pod API.
+!! Those steps could also be done using the Prose Pod API directly but it’s pretty advanced and subject to changes so we won’t document it here. However, if you are interested in doing so you can [reach out to our technical support team](https://prose.org/contact/) which will guide you into using the Pod API.
 
 However, you very likely don’t have access to a web browser on the machine where you are running the Prose Pod so you will have to create a first DNS record in order for you to access the Dashboard from your own web browser.
 
@@ -317,7 +319,7 @@ prose 10800 IN CNAME {hostname}
 
 Now, or after a few minutes (for your DNS provider to propagate the new records), you should be able to open `https://prose.{your_domain}:3030` in your web browser and see your Prose Pod Dashboard. If you get a SSL error, go back to [the “SSL certificates” section](#ssl-certificates) and make sure everything is correct.
 
-! If you can’t access your Dashboard at this point, feel free to [contact our technical support team](#crisp-chat-open) which will gladly help you fix your configuration.
+! If you can’t access your Dashboard at this point, feel free to [contact our technical support team](https://prose.org/contact/) which will gladly help you fix your configuration.
 
 Now that you have access to your Dashboard, you can follow [the “Initializing your workspace” section of the “Quickstart” guide](/guides/basics/quickstart/#initializing-your-workspace) to finish configuring your Prose Pod.
 

@@ -9,11 +9,13 @@ When something isn’t working correctly in your Prose Pod, your first source o
 - [Prose apps (client side)](#debugging-prose-apps-client-side)
 - [Prose apps (server side)](#debugging-prose-apps-server-side)
 
-! If you can’t find the source of a problem after reading this guide, feel free to [contact our technical support team](#crisp-chat-open) which will gladly help you identify the issue.
+! If you can’t find the source of a problem after reading this guide, feel free to [contact our technical support team](https://prose.org/contact/) which will gladly help you identify the issue.
 
 ## Debugging the Dashboard (client side)
 
 In your web browser, open the developer console and look for errors or warnings.
+
+---
 
 ## Debugging the Dashboard (server side)
 
@@ -37,11 +39,15 @@ If you can’t easily change this configuration file and would prefer using envi
 
 If you’re seeing timing issues, you might want to check logs in a telemetry console instead of a terminal. To enable telemetry, read [our “Telemetry” guide](/guides/operating/telemetry/).
 
+---
+
 ## Debugging Prose apps (client side)
 
 On macOS, find logs at `~/Library/Logs/org.prose.app-web/Prose.log`.
 
 In your web browser, open the developer console.
+
+---
 
 ## Debugging Prose apps (server side)
 
