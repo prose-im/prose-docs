@@ -14,15 +14,13 @@ To create a Prose workspace, the easiest solution is to use our Cloud-hosted ser
 
 ## Initializing your workspace
 
-!!! TODO: @valerian Where does the user get the URL to their Dashboard in the Cloud version?
-
 Once we’ve created your workspace, we’ll give you a link to your admin dashboard. The first time you open it, you will be guided through a quick initialization process. This section walks you through it.
 
 ### Server domain
 
-!!! TODO: @valerian Will they see this screen in the Cloud version or could we start directly at the workspace name?
-
 The first screen will ask you to choose a domain for your instant messaging server. If your team members emails are **name@company.com**, we recommend you enter **company.com** in the field.
+
+!! If you signed up for the Cloud version, **the server domain will be auto-generated for you**. You can later customize it to your own custom domain, but you will not be able to customize the base domain we provide for you.
 
 ! Prose can co-exist with your email and website **on the same domain**, you don’t need a subdomain for it to work properly.
 
@@ -58,8 +56,6 @@ Now log into your DNS provider’s administration dashboard (e.g. Cloudflare, AW
 The interface is different for each provider and they’re subject to changes so we can’t give you detailed steps but it should be pretty straightforward.
 
 ! **Tip:** If your DNS provider allows it, you can edit your DNS zone file and directly paste the DNS records copied to your clipboard when you click “Copy” at the end of each table row.
-
-!!! TODO: @valerian What would you think about adding screenshots showing how DNS setup might look like in a DNS provider’s UI? Like an example where we add records in Cloudflare or some other DNS provider.
 
 ### Ensuring your network configuration is correct
 

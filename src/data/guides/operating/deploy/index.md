@@ -244,7 +244,7 @@ curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/m
   > /var/www/default/.well-known/host-meta.json
 ```
 
-If your server is the one serving your domain and you don’t have a certificate just yet, TODO
+If your server is the one serving your domain and you don’t have a certificate just yet, run:
 
 ```bash
 certbot --nginx -d ${YOUR_DOMAIN:?}
