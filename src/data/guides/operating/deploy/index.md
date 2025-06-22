@@ -165,7 +165,7 @@ Once done, **edit the file to replace all placeholders** with your company infor
 
 To run a Prose Pod on your premises, you have to run all of its parts independently. Each is released as a Docker image, on Docker Hub (see [hub.docker.com/u/proseim](https://hub.docker.com/u/proseim)) and on GitHub’s Container Registry (see [github.com/orgs/prose-im/packages](https://github.com/orgs/prose-im/packages)).
 
-! If you have any technical question while setting up your Prose Pod, feel free to [chat with our technical support team](https://prose.org/contact/) which will gladly help you fix any issue you encounter.
+! If you have any technical question while setting up your Prose Pod, feel free to [contact our technical support team](https://prose.org/contact/) which will gladly help you fix any issue you encounter.
 
 #### Example: Run with Docker Compose
 
@@ -274,7 +274,7 @@ curl http://localhost:3030/api/pod/version
 
 If you get a JSON payload back containing information about the versions of you Prose Pod’s components, it means everything should be working correctly. If you want to make sure everything is well configured or if the call fails, you will have to check the logs.
 
-! If logs don’t guide you to a solution, feel free to [chat with our technical support team](https://prose.org/contact/) which will gladly help you fix any issue you encounter.
+! If logs don’t guide you to a solution, feel free to [contact our technical support team](https://prose.org/contact/) which will gladly help you fix any issue you encounter.
 
 #### Checking logs using Docker Compose
 
