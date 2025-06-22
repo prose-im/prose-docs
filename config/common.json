@@ -36,11 +36,6 @@
   },
 
   "images" : {
-    "illustrations" : {
-      "home"      : "images/illustrations/home.webp",
-      "not_found" : "images/illustrations/not-found.webp"
-    },
-
     "logos" : {
       "header_full"  : "images/logos/logo-header-full.svg",
       "header_short" : "images/logos/logo-header-short.svg",
