@@ -7,8 +7,8 @@
   "theme" : {
     "accent" : {
       "light" : {
-        "base"   : "#2b255d",
-        "active" : "#322b6a"
+        "base"   : "#2062da",
+        "active" : "#1152c8"
       },
 
       "dark" : {
