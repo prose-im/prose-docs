@@ -70,13 +70,28 @@
     }
   },
 
+  "colors" : {
+    "changes" : {
+      "groups" : {
+        "pod" : "#d34040",
+        "app" : "#dc9b37"
+      }
+    }
+  },
+
   "texts" : {
     "home" : {
       "title" : "Welcome to the Prose Technical Docs",
-      "label" : "Guides how to start using Prose and setup your own Prose Pod server."
+      "label" : "How to setup your own Prose Pod server. For Prose server admins."
     },
 
     "changes" : {
+      "groups" : {
+        "pod"   : "Pod",
+        "app"   : "App",
+        "other" : "Other"
+      },
+
       "titles" : {
         "feed"   : "Prose Platform Changes",
         "latest" : "Latest Platform Changes",
@@ -161,7 +176,7 @@
   "actions" : {
     "home" : [
       {
-        "route" : ["guides", "start"],
+        "route" : ["guides", "basics", "quickstart"],
         "label" : "Get Started with Prose"
       }
     ]
