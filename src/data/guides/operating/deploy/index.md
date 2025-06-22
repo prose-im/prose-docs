@@ -2,8 +2,6 @@ TITLE: Deploying a Prose Pod
 INDEX: 1
 UPDATED: 2025-06-15
 
-!!! 🚧 This guide is still a work-in-progress.
-
 ## Context: The architecture of a Prose Pod
 
 To begin with, let’s introduce you to the architecture of a Prose Pod, which will help you understand how things relate to one another.
