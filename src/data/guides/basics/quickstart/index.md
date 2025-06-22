@@ -2,31 +2,25 @@ TITLE: Quickstart
 INDEX: 1
 UPDATED: 2025-05-31
 
-!!! 🚧 This guide is still a work-in-progress.
-
 ## Creating a Prose workspace
 
 To create a Prose workspace, the easiest solution is to use our Cloud-hosted service. It is fully managed (uptime & updates) and allows for unlimited members. If you want to deploy Prose on your own premises, you can use the Community version, but beware that it has a 20 members limit. For more information, head over to [our Pricing page](https://prose.org/pricing/ "Pricing | Prose IM").
 
-!!! TODO: @valerian Is there a way to change “Read” in the navigation links and make it open in an external tab?
-
 + Navigation
-  | Prose Cloud: The easiest way to use Prose in your company. -> https://prose.org/cloud/signup/
+  | Prose Cloud: The easiest way to use Prose in your company. -> https://prose.org/cloud/signup/ [blank]
   | Self-hosted (Community): Want to host a Prose Pod youself? Read this guide. -> /guides/operating/deploy/
 
 ---
 
 ## Initializing your workspace
 
-!!! TODO: @valerian Where does the user get the URL to their Dashboard in the Cloud version?
-
 Once we’ve created your workspace, we’ll give you a link to your admin dashboard. The first time you open it, you will be guided through a quick initialization process. This section walks you through it.
 
 ### Server domain
 
-!!! TODO: @valerian Will they see this screen in the Cloud version or could we start directly at the workspace name?
-
 The first screen will ask you to choose a domain for your instant messaging server. If your team members emails are **name@company.com**, we recommend you enter **company.com** in the field.
+
+!! If you signed up for the Cloud version, **the server domain will be auto-generated for you**. You can later customize it to your own custom domain, but you will not be able to customize the base domain we provide for you.
 
 ! Prose can co-exist with your email and website **on the same domain**, you don’t need a subdomain for it to work properly.
 
@@ -63,8 +57,6 @@ The interface is different for each provider and they’re subject to changes so
 
 ! **Tip:** If your DNS provider allows it, you can edit your DNS zone file and directly paste the DNS records copied to your clipboard when you click “Copy” at the end of each table row.
 
-!!! TODO: @valerian What would you think about adding screenshots showing how DNS setup might look like in a DNS provider’s UI? Like an example where we add records in Cloudflare or some other DNS provider.
-
 ### Ensuring your network configuration is correct
 
 Once you have created all DNS records, close the “DNS setup instructions” pane and tap “Start network checks…”. If you had already closed the “DNS setup instructions” pane, you can find this button under “Advanced Settings” > “Network Setup” > “Network Setup Tools”.
@@ -94,5 +86,5 @@ $[“Invite a team member” screen](![“Invite a team member” screen](invite
 ## Next steps
 
 + Navigation
-  | Download Prose: Download the Prose app to start chatting. -> ./download/
+  | Download Prose: Download the Prose app to start chatting. -> /guides/basics/download/
   | Discover the Dashboard: Other features of the Dashboard. -> /guides/dashboard/

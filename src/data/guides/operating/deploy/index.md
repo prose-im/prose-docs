@@ -2,8 +2,6 @@ TITLE: Deploying a Prose Pod
 INDEX: 1
 UPDATED: 2025-06-15
 
-!!! 🚧 This guide is still a work-in-progress.
-
 ## Context: The architecture of a Prose Pod
 
 To begin with, let’s introduce you to the architecture of a Prose Pod, which will help you understand how things relate to one another.
@@ -48,7 +46,7 @@ And here are all the files you need to create and maintain:
 
 ## Deployment steps
 
-### Step 0: A helper variable
+### Step 1: A helper variable
 
 To copy-paste working commands from this guide, you should start by storing your domain as `YOUR_DOMAIN`:
 
@@ -56,7 +54,7 @@ To copy-paste working commands from this guide, you should start by storing your
 YOUR_DOMAIN= # Insert your domain
 ```
 
-### Step 1: Create the `prose` user
+### Step 2: Create the `prose` user
 
 For better isolation, you shouldn’t run Prose as root on your server. This guide uses a `prose` user that you should create using:
 
@@ -65,7 +63,7 @@ addgroup --gid 1001 prose
 adduser --uid 1001 --gid 1001 --disabled-password --no-create-home --gecos 'Prose' prose
 ```
 
-### Step 2: Create required files and directories
+### Step 3: Create required files and directories
 
 As detailed in [“Required files and directories”](#required-files-and-directories), Prose Pods require a certain amount of files and directories to exist. To create them, you can run:
 
@@ -165,7 +163,7 @@ Once done, **edit the file to replace all placeholders** with your company infor
 
 To run a Prose Pod on your premises, you have to run all of its parts independently. Each is released as a Docker image, on Docker Hub (see [hub.docker.com/u/proseim](https://hub.docker.com/u/proseim)) and on GitHub’s Container Registry (see [github.com/orgs/prose-im/packages](https://github.com/orgs/prose-im/packages)).
 
-! If you have any technical question while setting up your Prose Pod, feel free to [chat with our technical support team](https://prose.org/contact/) which will gladly help you fix any issue you encounter.
+! If you have any technical question while setting up your Prose Pod, feel free to [contact our technical support team](https://prose.org/contact/) which will gladly help you fix any issue you encounter.
 
 #### Example: Run with Docker Compose
 
@@ -189,6 +187,7 @@ If you want to use [Docker Compose](https://docs.docker.com/compose/) to deploy
    curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/compose.yaml -o /etc/prose/compose.yaml
    chown prose:prose /etc/prose/compose.yaml
    ```
+
 4. Configure [systemd](https://systemd.io/) to run Prose at startup and run it:
 
    ```bash
@@ -245,7 +244,7 @@ curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/m
   > /var/www/default/.well-known/host-meta.json
 ```
 
-If your server is the one serving your domain and you don’t have a certificate just yet, TODO
+If your server is the one serving your domain and you don’t have a certificate just yet, run:
 
 ```bash
 certbot --nginx -d ${YOUR_DOMAIN:?}
@@ -274,7 +273,7 @@ curl http://localhost:3030/api/pod/version
 
 If you get a JSON payload back containing information about the versions of you Prose Pod’s components, it means everything should be working correctly. If you want to make sure everything is well configured or if the call fails, you will have to check the logs.
 
-! If logs don’t guide you to a solution, feel free to [chat with our technical support team](https://prose.org/contact/) which will gladly help you fix any issue you encounter.
+! If logs don’t guide you to a solution, feel free to [contact our technical support team](https://prose.org/contact/) which will gladly help you fix any issue you encounter.
 
 #### Checking logs using Docker Compose
 
@@ -322,8 +321,6 @@ Now, or after a few minutes (for your DNS provider to propagate the new records)
 ! If you can’t access your Dashboard at this point, feel free to [contact our technical support team](https://prose.org/contact/) which will gladly help you fix your configuration.
 
 Now that you have access to your Dashboard, you can follow [the “Initializing your workspace” section of the “Quickstart” guide](/guides/basics/quickstart/#initializing-your-workspace) to finish configuring your Prose Pod.
-
-<!-- `certbot revoke --cert-name prose-test-1.remibardon.com --reason superseded` -->
 
 + Navigation
   | Initializing your workspace: Finish configuring your Prose Pod using the Dashboard. -> /guides/basics/quickstart/#initializing-your-workspace

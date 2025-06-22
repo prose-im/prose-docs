@@ -8,6 +8,5 @@ UPDATED: 2025-05-22
   | Quickstart: Willing to use Prose? Start from there. -> ./basics/quickstart/
   | Dashboard: Discover the Prose Dashboard and all of its features. -> ./dashboard/
   | Server Setup: Guides to help you setup your own Prose server. -> ./operating/
-  | Other guides: Other guides are classified there. -> ./others/
 
-! If you have any technical question while setting up your Prose server, feel free to [chat with our support team](https://prose.org/contact/). Our technical support team will gladly help you fix any issue you encounter.
+! If you have any technical question while setting up your Prose server, feel free to [contact our support team](https://prose.org/contact/). Our technical support team will gladly help you fix any issue you encounter.

@@ -4,9 +4,9 @@ UPDATED: 2025-05-28
 
 ## Using our “Downloads” page
 
-⭐️ _This is the preferred way to install Prose._
-
 Go to [our downloads page](https://prose.org/downloads) and get the Prose application for your platform (macOS or Windows).
+
+! ⭐️ This is the **preferred way** to install Prose.
 
 ---
 
