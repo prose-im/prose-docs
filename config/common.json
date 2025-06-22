@@ -47,6 +47,12 @@
     },
 
     "categories" : {
+      "guides" : {
+        "basics"    : "images/categories/guides/basics.svg",
+        "dashboard" : "images/categories/guides/dashboard.svg",
+        "operating" : "images/categories/guides/operating.svg"
+      },
+
       "references" : {
         "pod-api"    : "images/categories/references/pod-api.svg",
         "pod-config" : "images/categories/references/pod-config.svg"

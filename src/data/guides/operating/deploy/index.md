@@ -59,7 +59,10 @@ YOUR_DOMAIN= # Insert your domain
 For better isolation, you shouldn’t run Prose as root on your server. This guide uses a `prose` user that you should create using:
 
 ```bash
+# Create group
 addgroup --gid 1001 prose
+
+# Create user
 adduser --uid 1001 --gid 1001 --disabled-password --no-create-home --gecos 'Prose' prose
 ```
 
@@ -68,28 +71,36 @@ adduser --uid 1001 --gid 1001 --disabled-password --no-create-home --gecos 'Pros
 As detailed in [“Required files and directories”](#required-files-and-directories), Prose Pods require a certain amount of files and directories to exist. To create them, you can run:
 
 ```bash
+# Directories
 install -o prose -g prose -m 750 -d \
   /var/lib/{prose-pod-api,prosody} \
   /etc/{prose,prose-pod-api,prosody} \
   /etc/prosody/certs
 
+# Database
 install -o prose -g prose -m 640 -T /dev/null \
   /var/lib/prose-pod-api/database.sqlite
+
+# Environment
 install -o prose -g prose -m 600 -T /dev/null \
   /etc/prose/prose.env
 ```
 
-#### `Prose.toml`
+#### Create the `Prose.toml` file
 
 In order for your Prose Pod to run correctly, you need to write a few configuration keys in `/etc/prose-pod-api/Prose.toml`.
 
-You can find an up-to-date template at [github.com/prose-im/prose-pod-system/blob/master/templates/Prose.toml](https://github.com/prose-im/prose-pod-system/blob/master/templates/Prose.toml), or directly download it using:
+You can find an up-to-date template at [prose-im/prose-pod-system/blob/master/templates/Prose.toml](https://github.com/prose-im/prose-pod-system/blob/master/templates/Prose.toml), or directly download it using:
 
 ```bash
+# Download configuration template
 curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/templates/Prose.toml \
   | sed s/'{your_domain}'/"${YOUR_DOMAIN:?}"/g \
   > /etc/prose-pod-api/Prose.toml
+
+# Change configuration user/group
 chown prose:prose /etc/prose-pod-api/Prose.toml
+
 # Then edit </etc/prose-pod-api/Prose.toml>!
 ```
 
@@ -167,7 +178,7 @@ To run a Prose Pod on your premises, you have to run all of its parts independe
 
 #### Example: Run with Docker Compose
 
-To make deployments and updates easier, we maintain a [Compose file](https://docs.docker.com/compose/intro/compose-application-model/#the-compose-file) in [github.com/prose-im/prose-pod-system](https://github.com/prose-im/prose-pod-system).
+To make deployments and updates easier, we maintain a [Compose file](https://docs.docker.com/compose/intro/compose-application-model/#the-compose-file) in [prose-im/prose-pod-system](https://github.com/prose-im/prose-pod-system).
 
 If you want to use [Docker Compose](https://docs.docker.com/compose/) to deploy a Prose Pod, here are the steps you need to follow:
 
@@ -184,14 +195,20 @@ If you want to use [Docker Compose](https://docs.docker.com/compose/) to deploy
 3. Get the [latest Compose file](https://github.com/prose-im/prose-pod-system/blob/master/compose.yaml) using:
 
    ```bash
+   # Download Docker Compose file
    curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/compose.yaml -o /etc/prose/compose.yaml
+
+   # Change Compose file user/group
    chown prose:prose /etc/prose/compose.yaml
    ```
 
 4. Configure [systemd](https://systemd.io/) to run Prose at startup and run it:
 
    ```bash
+   # Install systemd service file
    curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/templates/prose.service -o /etc/systemd/system/prose.service
+
+   # Enable the prose systemd service
    systemctl daemon-reload
    systemctl enable prose
    systemctl start prose
@@ -220,9 +237,12 @@ The traffic to your Prose Pod will need to be routed by a [reverse proxy](https
 To make deployments easier, we maintain a nginx configuration file at [templates/nginx.conf in github.com/prose-im/prose-pod-system](https://github.com/prose-im/prose-pod-system/blob/master/templates/nginx.conf). You can download and enable it using:
 
 ```bash
+# Install NGINX files
 curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/templates/nginx.conf \
   | sed s/'{your_domain}'/"${YOUR_DOMAIN:?}"/g \
   > /etc/nginx/sites-available/prose."${YOUR_DOMAIN:?}"
+
+# Create symbolic links to NGINX files (enable sites)
 ln -s /etc/nginx/sites-{available,enabled}/prose."${YOUR_DOMAIN:?}"
 ```
 
@@ -234,10 +254,12 @@ systemctl reload nginx
 
 ```bash
 mkdir -p /var/www/default/.well-known/
+
 # .well-known/host-meta (XML)
 curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/templates/host-meta \
   | sed s/'{your_domain}'/"${YOUR_DOMAIN:?}"/g \
   > /var/www/default/.well-known/host-meta
+
 # .well-known/host-meta.json
 curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/templates/host-meta.json \
   | sed s/'{your_domain}'/"${YOUR_DOMAIN:?}"/g \
@@ -251,9 +273,12 @@ certbot --nginx -d ${YOUR_DOMAIN:?}
 ```
 
 ```bash
+# Install NGINX files
 curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/templates/nginx-well-known.conf \
   | sed s/'{your_domain}'/"${YOUR_DOMAIN:?}"/g \
   > /etc/nginx/sites-available/"${YOUR_DOMAIN:?}"
+
+# Create symbolic links to NGINX files (enable sites)
 ln -s /etc/nginx/sites-{available,enabled}/"${YOUR_DOMAIN:?}"
 ```
 
