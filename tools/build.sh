@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ##
 #  Prose - Docs
@@ -10,6 +10,8 @@
 
 ABSPATH=$(cd "$(dirname "$0")"; pwd)
 BASE_DIR="$ABSPATH/../"
+
+: ${COMMAND:=build}
 
 pushd "$BASE_DIR" > /dev/null
   cur_env="development"
@@ -25,7 +27,7 @@ pushd "$BASE_DIR" > /dev/null
     config_path_all+=",$config_path_local"
   fi
 
-  npm exec chappe build -- \
+  npm exec chappe "${COMMAND:?}" -- \
     --env="$cur_env" \
     --config="$config_path_all" \
     --assets="./res/assets" \
@@ -35,4 +37,3 @@ pushd "$BASE_DIR" > /dev/null
 popd > /dev/null
 
 exit $rc
-

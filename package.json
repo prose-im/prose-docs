@@ -20,7 +20,8 @@
     "url": "https://prose.org/"
   },
   "scripts": {
-    "build": "./tools/build.sh"
+    "build": "./tools/build.sh",
+    "dev": "./tools/dev.sh"
   },
   "devDependencies": {
     "chappe": "1.9.8"
