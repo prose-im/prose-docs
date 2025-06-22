@@ -200,13 +200,13 @@
 
         "actions"     : [
           {
-            "route" : ["guides", "operating"],
-            "label" : "Server Setup"
+            "route" : ["guides", "dashboard"],
+            "label" : "Use Dashboard"
           },
 
           {
-            "route" : ["guides", "others", "security"],
-            "label" : "Security"
+            "route" : ["guides", "operating"],
+            "label" : "Operate a Pod"
           }
         ]
       },

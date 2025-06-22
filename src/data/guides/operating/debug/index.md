@@ -9,7 +9,7 @@ When something isn’t working correctly in your Prose Pod, your first source o
 - [Prose apps (client side)](#debugging-prose-apps-client-side)
 - [Prose apps (server side)](#debugging-prose-apps-server-side)
 
-! If you can’t find the source of a problem after reading this guide, feel free to [contact our technical support team](#crisp-chat-open) which will gladly help you identify the issue.
+! If you can’t find the source of a problem after reading this guide, feel free to [contact our technical support team](https://prose.org/contact/) which will gladly help you identify the issue.
 
 ## Debugging the Dashboard (client side)
 
