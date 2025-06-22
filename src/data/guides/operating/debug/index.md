@@ -15,6 +15,8 @@ When something isn’t working correctly in your Prose Pod, your first source o
 
 In your web browser, open the developer console and look for errors or warnings.
 
+---
+
 ## Debugging the Dashboard (server side)
 
 If your issue happens when using the Dashboard but the developer console shows nothing, checking the Pod API logs should help you. Depending on how you started your Prose Pod, you can see it using `docker compose logs`, `journalctl` or some other utility.
@@ -37,11 +39,15 @@ If you can’t easily change this configuration file and would prefer using envi
 
 If you’re seeing timing issues, you might want to check logs in a telemetry console instead of a terminal. To enable telemetry, read [our “Telemetry” guide](/guides/operating/telemetry/).
 
+---
+
 ## Debugging Prose apps (client side)
 
 On macOS, find logs at `~/Library/Logs/org.prose.app-web/Prose.log`.
 
 In your web browser, open the developer console.
+
+---
 
 ## Debugging Prose apps (server side)
 

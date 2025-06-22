@@ -44,6 +44,8 @@ And here are all the files you need to create and maintain:
 - `/etc/prose/prose.env`: If using our Compose file (see [Example: Compose](#example-compose) later), this is where you can configure environment variables for your Prose Pod.
 - `/etc/prosody/certs/*`: SSL certificates for your domain.
 
+---
+
 ## Deployment steps
 
 ### Step 0: A helper variable
