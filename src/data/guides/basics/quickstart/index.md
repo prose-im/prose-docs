@@ -31,7 +31,7 @@ The first screen will ask you to choose a domain for your instant messaging serv
 <details>
   <summary>Click to show an example screenshot</summary>
 
-$[Workspace domain initialization screen](![Workspace initialization screen, workspace domain](/static/user/images/screenshots/dashboard/init-domain-fresh.png))
+$[Workspace domain initialization screen](![Workspace initialization screen, workspace domain](init-domain-fresh.png))
 
 </details>
 
@@ -42,7 +42,7 @@ After that, you will be prompted for a workspace name. It will be used on **Pros
 <details>
   <summary>Click to show an example screenshot</summary>
 
-$[Workspace name initialization screen](![Workspace initialization screen, workspace name](/static/user/images/screenshots/dashboard/init-name-fresh.png))
+$[Workspace name initialization screen](![Workspace initialization screen, workspace name](init-name-fresh.png))
 
 </details>
 
@@ -53,7 +53,7 @@ Finally, you will be asked for information about the first account you need to c
 <details>
   <summary>Click to show an example screenshot</summary>
 
-$[Admin account creation screen](![Workspace initialization screen, admin account](/static/user/images/screenshots/dashboard/init-admin-fresh.png))
+$[Admin account creation screen](![Workspace initialization screen, admin account](init-admin-fresh.png))
 
 </details>
 
@@ -66,7 +66,7 @@ We provide you all the DNS records you need to configure. To find them, navigate
 <details>
   <summary>Click to show an example screenshot</summary>
 
-$[DNS setup instructions screen](![DNS setup instructions screen](/static/user/images/screenshots/dashboard/dns-records-demo.png))
+$[DNS setup instructions screen](![DNS setup instructions screen](dns-records-demo.png))
 
 </details>
 
@@ -90,7 +90,7 @@ You should then see a screen that runs different network configuration checks an
 <details>
   <summary>Click to show an example screenshot</summary>
 
-$[Network configuration checker screen](![Network configuration checker screen](/static/user/images/screenshots/dashboard/network-checks-demo.png))
+$[Network configuration checker screen](![Network configuration checker screen](network-checks-demo.png))
 
 </details>
 
@@ -109,7 +109,7 @@ To do so, open “Team Members” > “Members & Invites” then click “Add a 
 <details>
   <summary>Click to show an example screenshot</summary>
 
-$[“Invite a team member” screen](![“Invite a team member” screen](/static/user/images/screenshots/dashboard/invite-member-fresh.png))
+$[“Invite a team member” screen](![“Invite a team member” screen](invite-member-fresh.png))
 
 </details>
 
