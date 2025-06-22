@@ -86,5 +86,5 @@ $[“Invite a team member” screen](![“Invite a team member” screen](invite
 ## Next steps
 
 + Navigation
-  | Download Prose: Download the Prose app to start chatting. -> ./download/
+  | Download Prose: Download the Prose app to start chatting. -> /guides/basics/download/
   | Discover the Dashboard: Other features of the Dashboard. -> /guides/dashboard/
