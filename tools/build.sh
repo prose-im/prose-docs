@@ -10,6 +10,7 @@
 
 ABSPATH=$(cd "$(dirname "$0")"; pwd)
 BASE_DIR="$ABSPATH/../"
+
 : ${COMMAND:=build}
 
 pushd "$BASE_DIR" > /dev/null
