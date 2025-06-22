@@ -82,7 +82,7 @@
   "texts" : {
     "home" : {
       "title" : "Welcome to the Prose Technical Docs",
-      "label" : "How to setup your own Prose Pod server. For Prose server admins."
+      "label" : "How to setup your own Prose Pod server. For Prose server admins (cloud & self-hosted)."
     },
 
     "changes" : {
@@ -178,6 +178,11 @@
       {
         "route" : ["guides", "basics", "quickstart"],
         "label" : "Get Started with Prose"
+      },
+
+      {
+        "route" : ["guides", "operating"],
+        "label" : "Self-Host Prose"
       }
     ]
   },
