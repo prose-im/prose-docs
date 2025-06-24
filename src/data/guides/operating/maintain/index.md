@@ -1,6 +1,6 @@
 TITLE: Maintaining a Prose Pod
 INDEX: 2
-UPDATED: 2025-05-31
+UPDATED: 2025-06-24
 
 ## Updating
 
@@ -11,11 +11,25 @@ If you are making a major update (from `X1.Y1.Z1` to `X2.Y2.Z2` if `X1 != X2`), 
 Update your `compose.yaml` file using:
 
 ```bash
-curl -LO https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/tags/${PROSE_VERSION:?}/compose.yaml
+curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/tags/${PROSE_VERSION:?}/compose.yaml -o /etc/prose/compose.yaml
 ```
 
 Then restart using:
 
 ```bash
-docker compose up -d --force-recreate
+systemctl restart prose
+```
+
+## After a factory reset
+
+```bash
+rsync -aL --chown=prose:prose /etc/{letsencrypt/live,prosody/certs}/
+```
+
+```bash
+curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/templates/prose.toml \
+  | sed s/'{your_domain}'/${YOUR_DOMAIN:?}/g \
+  > /etc/prose/prose.toml
+chown prose:prose /etc/prose/prose.toml
+# Then edit </etc/prose/prose.toml>!
 ```

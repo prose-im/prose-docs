@@ -1,6 +1,6 @@
 TITLE: Debugging a Prose Pod
 INDEX: 3
-UPDATED: 2025-05-31
+UPDATED: 2025-06-24
 
 When something isn’t working correctly in your Prose Pod, your first source of information will be its logs. This guide contains sections for each place where you could see bugs, here is an overview:
 
@@ -25,10 +25,10 @@ While your problem might be mentioned in a warning or error (enabled by default)
 
 !!! **Attention:** Increasing log levels will exponentially increase the amount of logs generated, so make sure to revert your changes after you’ve identified your issue. Don’t keep your Pod API running too long with `trace` logs enabled!
 
-To do so, add or update the `[log]` section in `/etc/prose-pod-api/Prose.toml` and set `level` to `"debug"` or `"trace"`:
+To do so, add or update the `[log]` section in `/etc/prose/prose.toml` and set `level` to `"debug"` or `"trace"`:
 
 ```toml
-# /etc/prose-pod-api/Prose.toml
+# /etc/prose/prose.toml
 [log]
 level = "debug"
 ```
@@ -57,10 +57,10 @@ While your problem might be mentioned in a warning or error (enabled by default)
 
 !!! **Attention:** Increasing log levels will exponentially increase the amount of logs generated, so make sure to revert your changes after you’ve identified your issue. Don’t keep your Pod Server running too long with `debug` logs enabled!
 
-To do so, add or update the `[server]` section in `/etc/prose-pod-api/Prose.toml` and set `log_level` to `"debug"`:
+To do so, add or update the `[server]` section in `/etc/prose/prose.toml` and set `log_level` to `"debug"`:
 
 ```toml
-# /etc/prose-pod-api/Prose.toml
+# /etc/prose/prose.toml
 [server]
 log_level = "debug"
 ```
