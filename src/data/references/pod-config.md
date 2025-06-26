@@ -148,7 +148,7 @@ Know that you might break your Prose Pod by changing those, we don’t guarante
 
 !!! (\*) Things will likely break if you change this.
 
-! (\*\*) Those modules will be enabled globally after everything other configuration has been applied (apart from dynamic overrides, which are always applied last).
+! (\*\*) Those modules will be enabled globally after every other configuration has been applied (apart from dynamic overrides, which are always applied last).
 
 ## ServiceAccountsConfig
 
