@@ -11,6 +11,7 @@ Want to host a Prose Pod instance yourself? Here are all the guides you need to
   | Maintaining a Prose Pod: Configuration, updates, migrations… -> ./maintain/
   | Debugging a Prose Pod: For when something’s wrong with your Prose Pod. -> ./debug/
   | Telemetry: Enable telemetry for your Prose Pod. -> ./telemetry/
+  | Advanced DNS: Instructions for complex DNS setups. -> ./advanced-dns/
 
 ## References
 

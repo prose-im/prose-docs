@@ -264,7 +264,8 @@
         "json",
         "toml",
         "nginx",
-        "ini"
+        "ini",
+        "dns-zone-file"
       ]
     }
   },
