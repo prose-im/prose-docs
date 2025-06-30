@@ -270,7 +270,7 @@ apt install -y nginx python3-certbot-nginx
 ```
 
 ```bash
-certbot --nginx -d prose.${YOUR_DOMAIN:?} -d admin.prose.${YOUR_DOMAIN:?}
+certbot certonly --nginx -d prose.${YOUR_DOMAIN:?} -d admin.prose.${YOUR_DOMAIN:?}
 ```
 
 To make deployments easier, we maintain a NGINX configuration file at [templates/nginx.conf in github.com/prose-im/prose-pod-system](https://github.com/prose-im/prose-pod-system/blob/master/templates/nginx.conf). You can download and enable it using:
