@@ -43,7 +43,23 @@ And here are all the files you need to create and maintain:
 
 ---
 
-## Deployment steps
+## Automated deployment
+
+To make deployments blazingly fast, we created a Bash script on [get.prose.org](https://get.prose.org/) that takes care of almost everything for you. To use it, run:
+
+```bash
+curl -L https://get.prose.org | sh
+```
+
+This script cannot support all scenarios, and it will skip steps or abort if it finds any blocking situation. You can try running it first, and do the rest of the deployment by hand using this guide. The main roadblocks are related to SSL certificates, which cannot be automated in some situations.
+
+Here is an example of what it will look like (potentially outdated but it gives you an idea):
+
+[![asciicast](https://asciinema.org/a/AytG7sGBYecRKsQ7dNjtAYwZB.svg)](https://asciinema.org/a/AytG7sGBYecRKsQ7dNjtAYwZB)
+
+---
+
+## Manual deployment
 
 ### Step 1: Some helper variables
 
