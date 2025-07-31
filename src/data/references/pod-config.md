@@ -1,6 +1,6 @@
 TYPE: Markdown
 TITLE: Pod configuration reference
-UPDATED: 2025-05-15
+UPDATED: 2025-06-30
 
 To configure a Prose Pod, you can use the `/etc/prose/prose.toml` configuration file (in [TOML](https://toml.io/) format).
 
@@ -10,35 +10,36 @@ Each field can also be overwritten using environment variables with the `PROSE_`
 
 | Key | Kind | Description | Default |
 | --- | ---- | ----------- | ------- |
-| `branding` | [`BrandingConfig`](#brandingconfig) | Where you configure static data like your company name. | See [below](#brandingconfig) |
-| `notify` | [`NotifyConfig`](#notifyconfig) | Where you set how notifications are sent (e.g. when sending invitations). | See [below](#notifyconfig) |
-| `log` | [`LogConfig`](#logconfig) | Log configuration for the Prose Pod API. | See [below](#logconfig) |
-| `default_response_timeout` | [Duration](#duration) | Timeout after which all requests are cancelled. | `PT10S` |
-| `default_retry_interval` | [Duration](#duration) | Default interval between retries (e.g. when running network checks). | `PT5S` |
+| `branding` | [BrandingConfig](#brandingconfig) | Where you configure static data like your company name. | See [below](#brandingconfig) |
+| `notifiers` | [NotifiersConfig](#notifiersconfig) | Where you set how notifications are sent (e.g. when sending invitations). | See [below](#notifiersconfig) |
+| `log` | [LogConfig](#logconfig) | Log configuration for the Prose Pod API. | See [below](#logconfig) |
+| `pod` | [PodConfig](#podconfig) | Configuration for the Prose Pod itself. | See [below](#podconfig) |
+| `server` | [ServerConfig](#serverconfig) | Server configuration. | See [below](#serverconfig) |
+| `dashboard` | [DashboardConfig](#dashboardconfig) | Dashboard configuration. | See [below](#dashboardconfig) |
 
 ## BrandingConfig
 
 | Key | Kind | Description | Default |
 | --- | ---- | ----------- | ------- |
 | `company_name` | `String` | Name of your company. Will be used in places like invitation emails. | - |
-| `page_title` | `String` | Name used in some places to refer to your Prose Pod API (e.g. “All data will be erased from {company}’s {page_title} databases.”). You shouldn’t have a reason to change it, but it’s there. | `"Prose Pod API"` |
+| `api_app_name` | `String` | Name used in some places to refer to your Prose Pod API (e.g. “All data will be erased from `{company_name}`’s `{api_app_name}` databases.”). You shouldn’t have a reason to change it, but it’s there. | `"Prose Pod API"` |
 
-## NotifyConfig
-
-| Key | Kind | Description | Default |
-| --- | ---- | ----------- | ------- |
-| `email` | `NotifyEmailConfig` | Email notifications + SMTP configuration. | - |
-
-### NotifyEmailConfig
+## NotifiersConfig
 
 | Key | Kind | Description | Default |
 | --- | ---- | ----------- | ------- |
-| `pod_address` | `String` (email address) | Pod email address (e.g. `"prose@{smtp_server_domain}"`). | - |
-| `smtp_host` | `String` | SMTP host. | `"localhost"` |
+| `email` | [EmailNotifierConfig](#emailnotifierconfig) | Email notifications + SMTP configuration. | - |
+
+### EmailNotifierConfig
+
+| Key | Kind | Description | Default |
+| --- | ---- | ----------- | ------- |
+| `pod_address` | `String` (email address) | Pod email address (e.g. `"prose@{smtp_host}"`). | `"prose@{server.domain}"` |
+| `smtp_host` | `String` | SMTP host. | - |
 | `smtp_port` | `u16` | SMTP port. | `587` |
-| `smtp_username` | `Option<String>` | SMTP username. | - |
-| `smtp_password` | `Option<String>` | SMTP password. | - |
-| `smtp_encrypt` | `bool` | Enable SMTP encryption. | `true` |
+| `smtp_username` | `String` (optional) | SMTP username. | - |
+| `smtp_password` | `String` (optional) | SMTP password. | - |
+| `smtp_encrypt` | `bool` | Require SMTP encryption. If `false`, will still use encryption but only if available. | `true` |
 
 ## LogConfig
 
@@ -56,66 +57,31 @@ Each field can also be overwritten using environment variables with the `PROSE_`
 | `with_span_events` | `bool` | Include span events. | `false` |
 | `with_thread_names` | `bool` | Include thread names. | `true` in debug, `false` in release |
 
----
-
-# Advanced settings
-
-You shouldn’t have to touch those, but if you really need them they exist.
-Know that you might break your Prose Pod by changing those, we don’t guarantee anything.
+## PodConfig
 
 | Key | Kind | Description | Default |
 | --- | ---- | ----------- | ------- |
-| `databases` | [`DatabasesConfig`](#databasesconfig) | Where you can configure internal Prose Pod API databases. | See [below](#databasesconfig) |
-| `bootstrap` | [`BootstrapConfig`](#bootstrapconfig) | Bootstrap configuration. | See [below](#bootstrapconfig) |
-| `auth` | [`AuthConfig`](#authconfig) | Authentication & authorization configuration. | See [below](#authconfig) |
-| `server` | [`ServerConfig`](#serverconfig) | Server configuration. | See [below](#serverconfig) |
-| `prosody` | [`ProsodySettings`](#prosodysettings) | Base Prosody configuration. | - |
-| `prosody_ext` | [`ProsodyExtConfig`](#prosodyextconfig) | Prosody extension configuration. | See [below](#prosodyextconfig) |
-| `service_accounts` | [`ServiceAccountsConfig`](#serviceaccountsconfig) | Service account configuration. | See [below](#serviceaccountsconfig) |
-| `address` | IPv4 / IPv6 | IP address to serve API on\*. | `"0.0.0.0"` |
-| `port` | `u16` | Port to serve the API on\*. | `8080` |
+| `address` | [PodAddress](#podaddress) | Public network address of the server that runs the Prose Pod. | See [below](#podaddress) |
 
-!!! (\*) Things will likely break if you change this.
+### PodAddress
 
-## DatabasesConfig
+Public network address of the server that runs the Prose Pod.
 
 | Key | Kind | Description | Default |
 | --- | ---- | ----------- | ------- |
-| `main` | [`DatabaseConfig`](#databaseconfig) | Main database configuration. | See [below](#databaseconfig) |
+| `domain` | `String` (optional)\* | Public domain name of the Prose Pod. | `"prose.{server.domain}"` |
+| `ipv4` | IPv4 (optional)\* | Static IPv4 of the Prose Pod. | - |
+| `ipv6` | IPv6 (optional)\* | Static IPv6 of the Prose Pod. | - |
 
-### DatabaseConfig
-
-| Key | Kind | Description | Default |
-| --- | ---- | ----------- | ------- |
-| `url` | URI | Database URL. | `"sqlite:///var/lib/prose-pod-api/database.sqlite"` |
-| `min_connections` | `Option<u32>` | Minimum number of connections. | `None` |
-| `max_connections` | `usize` | Maximum number of connections. | Parallelism capacity \* 4 |
-| `connect_timeout` | `u64` (seconds) | Connection acquiring timeout. | `5` |
-| `idle_timeout` | `Option<u64>` | Idle connection timeout. | `None` |
-| `sqlx_logging` | `bool` | Enable [sqlx](https://docs.rs/sqlx/latest/sqlx/) logging. | `false` |
-
-## BootstrapConfig
-
-| Key | Kind | Description | Default |
-| --- | ---- | ----------- | ------- |
-| `prose_pod_api_xmpp_password` | `String` | Bootstrap XMPP password for the Prose Pod API service account.\*\* | `"bootstrap"` |
-
-!! (\*\*) [The first thing the Prose Pod API does](https://github.com/prose-im/prose-pod-api/blob/c02f938161f134289a0c2e07f9ccc67dc97848a2/src/rest-api/src/features/startup_actions/mod.rs#L47) when starting up is changing this password to [a very strong random password](https://github.com/prose-im/prose-pod-api/blob/c02f938161f134289a0c2e07f9ccc67dc97848a2/src/service/src/features/xmpp/server_manager.rs#L116-L126), so you shouldn’t have a reason to change it (see [Provide a default bootstrap password · Issue #246 · prose-im/prose-pod-api](https://github.com/prose-im/prose-pod-api/issues/246)).
-
-## AuthConfig
-
-| Key | Kind | Description | Default |
-| --- | ---- | ----------- | ------- |
-| `token_ttl` | [Duration](#duration) | How long sessions are valid for (how often members need to log into the Dashboard again). Note that this only affects the Dashboard, not Prose apps. | `"PT3H"` (3 hours) |
-| `password_reset_token_ttl` | [Duration](#duration) | How long password reset links are valid for. | `"PT15M"` (15 minutes) |
-| `oauth2_registration_key` | `String` | OAuth 2.0 registration key. | Random 256-byte key |
+!! (\*) At least one of `domain`, `ipv4` and `ipv6` must be set.
 
 ## ServerConfig
 
 | Key | Kind | Description | Default |
 | --- | ---- | ----------- | ------- |
+| `domain` | `String` | Domain name of the messaging server. This is what will appear in user IDs (`user@domain`). Once set, it cannot be changed. | - |
 | `log_level` | `String` | Maximum log level of the Prose Pod Server (`"debug"`, `"info"`, `"warn"`, `"error"`). | `"info"` |
-| `defaults` | [`ServerDefaultsConfig`](#serverdefaultsconfig) | Server configuration defaults. Will be used unless you override them using the Dashboard or Prose Pod API. | See [below](#serverdefaultsconfig) |
+| `defaults` | [ServerDefaultsConfig](#serverdefaultsconfig) | Server configuration defaults. Will be used unless you override them using the Dashboard or Prose Pod API. | See [below](#serverdefaultsconfig) |
 | `oauth2_registration_key` | `String` | OAuth 2.0 registration key. | Random 256-byte key |
 | `oauth2_access_token_ttl` | `u32` (seconds) | OAuth 2.0 access token TTL. | `10800` (3 hours) |
 | `http_port` | `u16` | HTTP port.\* | `5280` |
@@ -136,8 +102,75 @@ Know that you might break your Prose Pod by changing those, we don’t guarante
 | `federation_enabled` | `bool` | Enabling federation will allow other servers to connect to your. This lets users from other Prose Workspaces connect with users in this Workspace. For more safety, whitelist friendly servers. | `false` |
 | `federation_whitelist_enabled` | `bool` | Whether or not to enable server whitelisting. Caution: If a whitelist is set but disabled, your server will still federate with the entire XMPP network. | `false` |
 | `federation_friendly_servers` | `Vec<String>` | If a whitelist is defined, then other servers will not be allowed to connect to this server, except whitelisted ones. It is recommended to whitelist servers you typically work with, i.e. other teams. | `[]` |
-| `push_notification_with_body` | `bool` | Whether or not to send the real message body to the remote pubsub node. Without end-to-end encryption, enabling this may expose your message contents to your client developers and OS vendor. Not recommended. | `false` |
-| `push_notification_with_sender` | `bool` | Whether or not to send the real message sender to the remote pubsub node. Enabling this may expose your contacts to your client developers and OS vendor. Not recommended. | `false` |
+| `push_notification_with_body` | `bool` | Whether or not to send the real message body to the remote pubsub node. Without end-to-end encryption, enabling this may expose your message contents to your client developers and OS vendor. Not recommended. | `true` |
+| `push_notification_with_sender` | `bool` | Whether or not to send the real message sender to the remote pubsub node. Enabling this may expose your contacts to your client developers and OS vendor. Not recommended. | `true` |
+
+## DashboardConfig
+
+| Key | Kind | Description | Default |
+| --- | ---- | ----------- | ------- |
+| `url` | URI | Bashboard URL. | `"https://admin.{pod.address.domain}"` |
+
+---
+
+# Advanced settings
+
+You shouldn’t have to touch those, but if you really need them they exist.
+Know that you might break your Prose Pod by changing those, we don’t guarantee anything.
+
+| Key | Kind | Description | Default |
+| --- | ---- | ----------- | ------- |
+| `api` | [ApiConfig](#apiconfig) | Prose Pod API configuration. | See [below](#apiconfig) |
+| `bootstrap` | [BootstrapConfig](#bootstrapconfig) | Bootstrap configuration. | See [below](#bootstrapconfig) |
+| `auth` | [AuthConfig](#authconfig) | Authentication & authorization configuration. | See [below](#authconfig) |
+| `prosody_ext` | [ProsodyExtConfig](#prosodyextconfig) | Prosody extension configuration. | See [below](#prosodyextconfig) |
+| `prosody` | `HashMap<String, ProsodyHostConfig>` | A map of [`ProsodyHostConfig`](#prosodyhostconfig)s by Prosody `VirtualHost` or `Component` domain. The special `"global"` key applies to the global Prosody configuration (top level). | `[:]` |
+| `service_accounts` | [ServiceAccountsConfig](#serviceaccountsconfig) | Service account configuration. | See [below](#serviceaccountsconfig) |
+
+## ApiConfig
+
+| Key | Kind | Description | Default |
+| --- | ---- | ----------- | ------- |
+| `databases` | [DatabasesConfig](#databasesconfig) | Where you can configure internal Prose Pod API databases. | See [below](#databasesconfig) |
+| `address` | IPv4 / IPv6 | IP address to serve API on\*. | `"0.0.0.0"` |
+| `port` | `u16` | Port to serve the API on\*. | `8080` |
+| `default_response_timeout` | [Duration](#duration) | Timeout after which all requests are cancelled. | `PT10S` |
+| `default_retry_interval` | [Duration](#duration) | Default interval between retries (e.g. when running network checks). | `PT5S` |
+
+!!! (\*) Things will likely break if you change this.
+
+## DatabasesConfig
+
+| Key | Kind | Description | Default |
+| --- | ---- | ----------- | ------- |
+| `main` | [DatabaseConfig](#databaseconfig) | Main database configuration. | See [below](#databaseconfig) |
+
+### DatabaseConfig
+
+| Key | Kind | Description | Default |
+| --- | ---- | ----------- | ------- |
+| `url` | URI | Database URL. | `"sqlite:///var/lib/prose-pod-api/database.sqlite"` |
+| `min_connections` | `u32` (optional) | Minimum number of connections. | `None` |
+| `max_connections` | `usize` | Maximum number of connections. | Parallelism capacity \* 4 |
+| `connect_timeout` | `u64` (seconds) | Connection acquiring timeout. | `5` |
+| `idle_timeout` | `u64` (optional) | Idle connection timeout. | `None` |
+| `sqlx_logging` | `bool` | Enable [sqlx](https://docs.rs/sqlx/latest/sqlx/) logging. | `false` |
+
+## BootstrapConfig
+
+| Key | Kind | Description | Default |
+| --- | ---- | ----------- | ------- |
+| `prose_pod_api_xmpp_password` | `String` | Bootstrap XMPP password for the Prose Pod API service account.\*\* | `"bootstrap"` |
+
+!! (\*\*) [The first thing the Prose Pod API does](https://github.com/prose-im/prose-pod-api/blob/c02f938161f134289a0c2e07f9ccc67dc97848a2/src/rest-api/src/features/startup_actions/mod.rs#L47) when starting up is changing this password to [a very strong random password](https://github.com/prose-im/prose-pod-api/blob/c02f938161f134289a0c2e07f9ccc67dc97848a2/src/service/src/features/xmpp/server_manager.rs#L116-L126), so you shouldn’t have a reason to change it (see [Provide a default bootstrap password · Issue #246 · prose-im/prose-pod-api](https://github.com/prose-im/prose-pod-api/issues/246)).
+
+## AuthConfig
+
+| Key | Kind | Description | Default |
+| --- | ---- | ----------- | ------- |
+| `token_ttl` | [Duration](#duration) | How long sessions are valid for (how often members need to log into the Dashboard again). Note that this only affects the Dashboard, not Prose apps. | `"PT3H"` (3 hours) |
+| `password_reset_token_ttl` | [Duration](#duration) | How long password reset links are valid for. | `"PT15M"` (15 minutes) |
+| `oauth2_registration_key` | `String` | OAuth 2.0 registration key. | Random 256-byte key |
 
 ## ProsodyExtConfig
 
@@ -150,12 +183,21 @@ Know that you might break your Prose Pod by changing those, we don’t guarante
 
 ! (\*\*) Those modules will be enabled globally after every other configuration has been applied (apart from dynamic overrides, which are always applied last).
 
+## ProsodyHostConfig
+
+Prosody settings to apply for one host (`VirtualHost`, `Component` or global).
+
+| Key | Kind | Description | Default |
+| --- | ---- | ----------- | ------- |
+| `defaults` | [ProsodySettings](#prosodysettings) (optional) | Defaults (overriden by config stored in the API database). | - |
+| `overrides` | [ProsodySettings](#prosodysettings) (optional) | Overrides (applied no matter what). | - |
+
 ## ServiceAccountsConfig
 
 | Key | Kind | Description | Default |
 | --- | ---- | ----------- | ------- |
-| `prose_workspace` | [`ServiceAccountConfig`](#serviceaccountconfig) | XMPP account of your Prose Workspace itself. It is used to store your Workspace name, accent color and other information in a way that makes it available via the XMPP protocol. | `{ xmpp_node: "prose-workspace" }` |
-| `prose_pod_api` | [`ServiceAccountConfig`](#serviceaccountconfig) | XMPP account used by the Prose Pod API itself.\* | `{ xmpp_node: "prose-pod-api" }` |
+| `prose_workspace` | [ServiceAccountConfig](#serviceaccountconfig) | XMPP account of your Prose Workspace itself. It is used to store your Workspace name, accent color and other information in a way that makes it available via the XMPP protocol. | `{ xmpp_node: "prose-workspace" }` |
+| `prose_pod_api` | [ServiceAccountConfig](#serviceaccountconfig) | XMPP account used by the Prose Pod API itself.\* | `{ xmpp_node: "prose-pod-api" }` |
 
 !!! (\*) Things will likely break if you change this.
 
@@ -174,7 +216,7 @@ They might expose user data or things like that. You have been warned.
 
 | Key | Kind | Description | Default |
 | --- | ---- | ----------- | ------- |
-| `debug_use_at_your_own_risk` | [`DebugConfig`](#debugconfig) | Debug configuration. | See [below](#debugconfig) |
+| `debug_use_at_your_own_risk` | [DebugConfig](#debugconfig) | Debug configuration. | See [below](#debugconfig) |
 
 ## DebugConfig
 
@@ -183,6 +225,7 @@ They might expose user data or things like that. You have been warned.
 | `log_config_at_startup` | `bool` | Log the parsed Prose Pod API configuration at startup. | `true` in debug, `false` in release |
 | `detailed_error_responses` | `bool` | Enable detailed error responses (adds detailed messages and debug information). | `true` in debug, `false` in release |
 | `c2s_unencrypted` | `bool` | Allow unencrypted client-to-server connections. | `false` |
+| `skip_startup_actions` | `Vec<String>` | Startup actions to skip (by module name). | `[]` |
 
 ---
 
