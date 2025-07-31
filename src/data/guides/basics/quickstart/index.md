@@ -4,11 +4,11 @@ UPDATED: 2025-05-31
 
 ## Creating a Prose workspace
 
-To create a Prose workspace, the easiest solution is to use our Cloud-hosted service. It is fully managed (uptime & updates) and allows for unlimited members. If you want to deploy Prose on your own premises, you can use the Community version, but beware that it has a 20 members limit. For more information, head over to [our Pricing page](https://prose.org/pricing/ "Pricing | Prose IM").
+To create a Prose workspace, the easiest solution is to first deploy the Community version, but beware that it has a 20 members limit. If you then need more members, you can easily start paying for the Business version and upgrade your Community server setup, without having to re-create everything. For more information, head over to [our Pricing page](https://prose.org/pricing/ "Pricing | Prose IM").
 
 + Navigation
-  | Prose Cloud: The easiest way to use Prose in your company. -> https://prose.org/cloud/signup/ [blank]
-  | Self-hosted (Community): Want to host a Prose Pod youself? Read this guide. -> /guides/operating/deploy/
+  | Deploying a Prose Pod: Want to host a Prose Pod youself? Read this guide. -> /guides/operating/deploy/
+  | Prose Pricing: See how much you will pay per user. -> https://prose.org/pricing/ [blank]
 
 ---
 
@@ -19,8 +19,6 @@ Once we’ve created your workspace, we’ll give you a link to your admin dashb
 ### Server domain
 
 The first screen will ask you to choose a domain for your instant messaging server. If your team members emails are **name@company.com**, we recommend you enter **company.com** in the field.
-
-!! If you signed up for the Cloud version, **the server domain will be auto-generated for you**. You can later customize it to your own custom domain, but you will not be able to customize the base domain we provide for you.
 
 ! Prose can co-exist with your email and website **on the same domain**, you don’t need a subdomain for it to work properly.
 
