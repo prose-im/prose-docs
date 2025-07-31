@@ -2,7 +2,7 @@ TYPE: Markdown
 TITLE: Pod configuration reference
 UPDATED: 2025-05-15
 
-To configure a Prose Pod, you can use the `/etc/prose-pod-api/Prose.toml` configuration file (in [TOML](https://toml.io/) format).
+To configure a Prose Pod, you can use the `/etc/prose/prose.toml` configuration file (in [TOML](https://toml.io/) format).
 
 Each field can also be overwritten using environment variables with the `PROSE_` prefix and path segments separated by `__`. For example, you might change the Prose Pod API’s maximum log level by setting `PROSE_LOG__LEVEL=debug`.
 
@@ -148,7 +148,7 @@ Know that you might break your Prose Pod by changing those, we don’t guarante
 
 !!! (\*) Things will likely break if you change this.
 
-! (\*\*) Those modules will be enabled globally after everything other configuration has been applied (apart from dynamic overrides, which are always applied last).
+! (\*\*) Those modules will be enabled globally after every other configuration has been applied (apart from dynamic overrides, which are always applied last).
 
 ## ServiceAccountsConfig
 

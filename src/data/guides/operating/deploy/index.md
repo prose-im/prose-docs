@@ -1,6 +1,6 @@
 TITLE: Deploying a Prose Pod
 INDEX: 1
-UPDATED: 2025-06-15
+UPDATED: 2025-06-26
 
 ## Context: The architecture of a Prose Pod
 
@@ -29,8 +29,7 @@ Here are all the directories a Prose Pod uses:
 
 - `/var/lib/prose-pod-api/`: Pod API data (invitations, roles…).
 - `/var/lib/prosody/`: Server data (messages, avatars…).
-- `/etc/prose/`: Prose Pod configuration (environment).
-- `/etc/prose-pod-api/`: Pod API configuration ().
+- `/etc/prose/`: Prose Pod configuration.
 - `/etc/prosody/`: Prosody configuration (see [Configuring Prosody](https://prosody.im/doc/configure)).
   - `/etc/prosody/certs/`: SSL certificates.
 - `/usr/share/prose/`: Bootstrapping configuration.
@@ -38,7 +37,7 @@ Here are all the directories a Prose Pod uses:
 
 And here are all the files you need to create and maintain:
 
-- `/etc/prose-pod-api/Prose.toml`: See the [Pod configuration reference](http://localhost:8040/references/pod-config/).
+- `/etc/prose/prose.toml`: See the [Pod configuration reference](http://localhost:8040/references/pod-config/).
 - `/etc/prose/prose.env`: If using our Compose file (see [Example: Compose](#example-compose) later), this is where you can configure environment variables for your Prose Pod.
 - `/etc/prosody/certs/*`: SSL certificates for your domain.
 
@@ -46,15 +45,49 @@ And here are all the files you need to create and maintain:
 
 ## Deployment steps
 
-### Step 1: A helper variable
+### Step 1: Some helper variables
 
-To copy-paste working commands from this guide, you should start by storing your domain as `YOUR_DOMAIN`:
+To copy-paste working commands from this guide, please start by creating the following variables:
 
 ```bash
+PROSE_FILES=https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master
 YOUR_DOMAIN= # Insert your domain
 ```
 
-### Step 2: Create the `prose` user
+### Step 2: Some DNS configuration
+
+While the Dashboard walks you through configuring your DNS zone to get Prose working, when you are deploying a Prose Pod yourself you will need some of it in advance to get SSL certificates. While you’re at it, better add them all so this guide will provide every record you need to set.
+
+! Because of how certificates get issued and, more importantly, renewed, we can’t provide a “one size fits all” solution and have to assume you’re running the Prose Pod on the machine serving your apex domain. If it’s not your case, please read [our Advanced DNS guide](/guides/operating/advanced-dns).
+
+If the machine you are deploying Prose on has static IP addresses, add the following DNS records:
+
+```dns-zone-file
+; Let users connect
+_xmpp-client._tcp.{your_domain}. 3600 IN SRV 0 5 5222 prose.{your_domain}.
+; Access the Dashboard
+admin.prose.{your_domain}. 3600 IN CNAME prose.{your_domain}.
+; Required because SRV records cannot point to a CNAME
+prose.{your_domain}. 3600 IN A {ipv4}
+prose.{your_domain}. 3600 IN AAAA {ipv6}
+; Required because we need to get a SSL certificate for `groups.{your_domain}`
+groups.{your_domain}. 3600 IN CNAME prose.{your_domain}.
+```
+
+If you don’t have access to static IP addresses, add the following DNS records:
+
+```dns-zone-file
+; Let users connect
+_xmpp-client._tcp.{your_domain}. 3600 IN SRV 0 5 5222 {hostname}.
+; Access the Web app
+prose.{your_domain}. 3600 IN CNAME {hostname}.
+; Access the Dashboard
+admin.prose.{your_domain}. 3600 IN CNAME {hostname}.
+; Required because we need to get a SSL certificate for `groups.{your_domain}`
+groups.{your_domain}. 3600 IN CNAME {hostname}.
+```
+
+### Step 3: Create the `prose` user
 
 For better isolation, you shouldn’t run Prose as root on your server. This guide uses a `prose` user that you should create using:
 
@@ -66,7 +99,7 @@ addgroup --gid 1001 prose
 adduser --uid 1001 --gid 1001 --disabled-password --no-create-home --gecos 'Prose' prose
 ```
 
-### Step 3: Create required files and directories
+### Step 4: Create required files and directories
 
 As detailed in [“Required files and directories”](#required-files-and-directories), Prose Pods require a certain amount of files and directories to exist. To create them, you can run:
 
@@ -74,7 +107,7 @@ As detailed in [“Required files and directories”](#required-files-and-direct
 # Directories
 install -o prose -g prose -m 750 -d \
   /var/lib/{prose-pod-api,prosody} \
-  /etc/{prose,prose-pod-api,prosody} \
+  /etc/{prose,prosody} \
   /etc/prosody/certs
 
 # Database
@@ -86,22 +119,22 @@ install -o prose -g prose -m 600 -T /dev/null \
   /etc/prose/prose.env
 ```
 
-#### Create the `Prose.toml` file
+#### Create the `prose.toml` file
 
-In order for your Prose Pod to run correctly, you need to write a few configuration keys in `/etc/prose-pod-api/Prose.toml`.
+In order for your Prose Pod to run correctly, you need to write a few configuration keys in `/etc/prose/prose.toml`.
 
-You can find an up-to-date template at [prose-im/prose-pod-system/blob/master/templates/Prose.toml](https://github.com/prose-im/prose-pod-system/blob/master/templates/Prose.toml), or directly download it using:
+You can find an up-to-date template at [prose-im/prose-pod-system/blob/master/templates/prose.toml](https://github.com/prose-im/prose-pod-system/blob/master/templates/prose.toml), or directly download it using:
 
 ```bash
 # Download configuration template
-curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/templates/Prose.toml \
-  | sed s/'{your_domain}'/"${YOUR_DOMAIN:?}"/g \
-  > /etc/prose-pod-api/Prose.toml
+curl -L "${PROSE_FILES:?}"/templates/prose.toml \
+  | sed s/'{your_domain}'/${YOUR_DOMAIN:?}/g \
+  > /etc/prose/prose.toml
 
 # Change configuration user/group
-chown prose:prose /etc/prose-pod-api/Prose.toml
+chown prose:prose /etc/prose/prose.toml
 
-# Then edit </etc/prose-pod-api/Prose.toml>!
+# Then edit </etc/prose/prose.toml>!
 ```
 
 Once done, **edit the file to replace all placeholders** with your company information.
@@ -110,23 +143,21 @@ Once done, **edit the file to replace all placeholders** with your company infor
 
 #### SSL certificates
 
-! This section supposes you’re using [nginx](https://nginx.org/en/). If you use another reverse proxy, please update instructions accordingly. If you don’t have nginx installed just yet, run `apt install -y nginx`.
+To run a Prose Pod, the messaging server will need certificates for `{your_domain}` and `groups.{your_domain}`. If you don’t already have those, here is one way to get them:
 
 1. Install [certbot](https://certbot.eff.org/):
 
    ```bash
-   apt install -y certbot python3-certbot-nginx
+   apt update
+   apt install -y certbot
    ```
 
-2. Ensure you have `A`/`AAAA` DNS records pointing to your server (so certbot can pass its SSL challenge).
+2. Ensure you have DNS records pointing `{your_domain}` and `groups.{your_domain}` to your server (so certbot can pass its SSL challenge). If you don’t have it, go back to [Step 2: Some DNS configuration](#step-2-some-dns-configuration).
 
 3. Request a SSL certificate for your Prose Pod:
 
    ```bash
-   certbot --nginx \
-     -d prose.${YOUR_DOMAIN:?} \
-     -d admin.prose.${YOUR_DOMAIN:?} \
-     -d groups.prose.${YOUR_DOMAIN:?}
+   certbot certonly --standalone -d ${YOUR_DOMAIN:?} -d groups.${YOUR_DOMAIN:?}
    ```
 
    Note that certbot should have automatically created `/etc/cron.d/certbot` to handle certificates renewal.
@@ -159,18 +190,18 @@ Once done, **edit the file to replace all placeholders** with your company infor
 4. certbot certificates are stored in `/etc/letsencrypt/live`, but Prosody will search in `/etc/prosody/certs`. Normally we’d use `prosodyctl --root cert import /etc/letsencrypt/live` (as explained in [Let’s Encrypt – Prosody IM](https://prosody.im/doc/letsencrypt)), but Prose runs Prosody in a dedicated container therefore your server doesn’t have access to `prosodyctl` (and we can’t use symbolic links). Here is one way to copy the certificates manually:
 
    ```bash
-   rsync -aL --chown=prose:prose /etc/{letsencrypt/live,prosody/certs}/
+   rsync -aL --chown=prose:prose /etc/{letsencrypt/live,prosody/certs}/${YOUR_DOMAIN:?}/
    ```
 
-   ! **Tip:** If you manage multiple certificates and want Prosody to only see the one you use for Prose, you can use `rsync -aL --chown=prose:prose /etc/{letsencrypt/live,prosody/certs}/${YOUR_DOMAIN:?}/` instead.
-
-5. certbot should have automatically created `/etc/cron.d/certbot` to handle certificates renewal, but you still have to add a certbot renewal hook to update Prosody certificates when certificates are renewed. For this, assign the command you executed previously in as `post_hook` under `[renewalparams]` in `/etc/letsencrypt/renewal/prose.${YOUR_DOMAIN:?}.conf`. For example, if you used `rsync -aL --chown=prose:prose /etc/{letsencrypt/live,prosody/certs}/` you should set:
+5. certbot should have automatically created `/etc/cron.d/certbot` to handle certificates renewal, but you still have to add a certbot renewal hook to update Prosody certificates when certificates are renewed. For this, assign the command you executed previously in as `post_hook` under `[renewalparams]` in `/etc/letsencrypt/renewal/${YOUR_DOMAIN:?}.conf`. For example, if you used `rsync -aL --chown=prose:prose /etc/{letsencrypt/live,prosody/certs}/${YOUR_DOMAIN:?}/` you should set:
 
    ```toml
-   post_hook = "/bin/bash -c 'rsync -aL --chown=prose:prose /etc/{letsencrypt/live,prosody/certs}/'"
+   post_hook = "/bin/bash -c 'rsync -aL --chown=prose:prose /etc/{letsencrypt/live,prosody/certs}/{your_domain}/'"
    ```
 
-### Step 3: Run your Prose Pod
+   !! Make sure to replace `{your_domain}` by your domain!
+
+### Step 5: Run your Prose Pod
 
 To run a Prose Pod on your premises, you have to run all of its parts independently. Each is released as a Docker image, on Docker Hub (see [hub.docker.com/u/proseim](https://hub.docker.com/u/proseim)) and on GitHub’s Container Registry (see [github.com/orgs/prose-im/packages](https://github.com/orgs/prose-im/packages)).
 
@@ -196,7 +227,7 @@ If you want to use [Docker Compose](https://docs.docker.com/compose/) to deploy
 
    ```bash
    # Download Docker Compose file
-   curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/compose.yaml -o /etc/prose/compose.yaml
+   curl -L "${PROSE_FILES:?}"/compose.yaml -o /etc/prose/compose.yaml
 
    # Change Compose file user/group
    chown prose:prose /etc/prose/compose.yaml
@@ -206,7 +237,7 @@ If you want to use [Docker Compose](https://docs.docker.com/compose/) to deploy
 
    ```bash
    # Install systemd service file
-   curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/templates/prose.service -o /etc/systemd/system/prose.service
+   curl -L "${PROSE_FILES:?}"/templates/prose.service -o /etc/systemd/system/prose.service
 
    # Enable the prose systemd service
    systemctl daemon-reload
@@ -228,72 +259,91 @@ docker compose -f /etc/prose/compose.yaml logs --no-log-prefix -- {service_name}
 
 ! If the error logs aren’t clear enough, don’t hesitate [reaching out to our technical support team](https://prose.org/contact/).
 
-### Step 4: Configure the reverse proxy
+### Step 6: Configure the reverse proxy
 
 The traffic to your Prose Pod will need to be routed by a [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy).
 
-! This section supposes you’re using [nginx](https://nginx.org/en/). If you use another reverse proxy, please update insctructions accordingly.
+! This section supposes you’re using [NGINX](https://nginx.org/en/). If you use another reverse proxy, please update insctructions accordingly.
 
-To make deployments easier, we maintain a nginx configuration file at [templates/nginx.conf in github.com/prose-im/prose-pod-system](https://github.com/prose-im/prose-pod-system/blob/master/templates/nginx.conf). You can download and enable it using:
+```bash
+apt install -y nginx python3-certbot-nginx
+```
+
+```bash
+certbot --nginx -d prose.${YOUR_DOMAIN:?} -d admin.prose.${YOUR_DOMAIN:?}
+```
+
+To make deployments easier, we maintain a NGINX configuration file at [templates/nginx.conf in github.com/prose-im/prose-pod-system](https://github.com/prose-im/prose-pod-system/blob/master/templates/nginx.conf). You can download and enable it using:
 
 ```bash
 # Install NGINX files
-curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/templates/nginx.conf \
-  | sed s/'{your_domain}'/"${YOUR_DOMAIN:?}"/g \
-  > /etc/nginx/sites-available/prose."${YOUR_DOMAIN:?}"
+curl -L "${PROSE_FILES:?}"/templates/nginx.conf \
+  | sed s/'{your_domain}'/${YOUR_DOMAIN:?}/g \
+  > /etc/nginx/sites-available/prose.${YOUR_DOMAIN:?}
 
-# Create symbolic links to NGINX files (enable sites)
-ln -s /etc/nginx/sites-{available,enabled}/prose."${YOUR_DOMAIN:?}"
+# Enable NGINX sites
+ln -s /etc/nginx/sites-{available,enabled}/prose.${YOUR_DOMAIN:?}
 ```
 
 ```bash
+# Disable the catch-all default NGINX configuration
+rm /etc/nginx/sites-enabled/default
+```
+
+```bash
+# Apply the new NGINX configuration
 systemctl reload nginx
 ```
 
-### Step 5: `.well-known/host-meta`
+### Step 7: `.well-known/host-meta`
 
 ```bash
-mkdir -p /var/www/default/.well-known/
-
-# .well-known/host-meta (XML)
-curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/templates/host-meta \
-  | sed s/'{your_domain}'/"${YOUR_DOMAIN:?}"/g \
-  > /var/www/default/.well-known/host-meta
-
-# .well-known/host-meta.json
-curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/templates/host-meta.json \
-  | sed s/'{your_domain}'/"${YOUR_DOMAIN:?}"/g \
-  > /var/www/default/.well-known/host-meta.json
+WWW_ROOT=/var/www/default
 ```
 
-If your server is the one serving your domain and you don’t have a certificate just yet, run:
+```bash
+mkdir -p "${WWW_ROOT:?}"/.well-known/
+
+# .well-known/host-meta (XML)
+curl -L "${PROSE_FILES:?}"/templates/host-meta \
+  | sed s/'{your_domain}'/${YOUR_DOMAIN:?}/g \
+  > "${WWW_ROOT:?}"/.well-known/host-meta
+
+# .well-known/host-meta.json
+curl -L "${PROSE_FILES:?}"/templates/host-meta.json \
+  | sed s/'{your_domain}'/${YOUR_DOMAIN:?}/g \
+  > "${WWW_ROOT:?}"/.well-known/host-meta.json
+```
+
+<!-- If your server is the one serving your domain and you don’t have a certificate just yet, run:
 
 ```bash
 certbot --nginx -d ${YOUR_DOMAIN:?}
-```
+``` -->
 
 ```bash
 # Install NGINX files
-curl -L https://raw.githubusercontent.com/prose-im/prose-pod-system/refs/heads/master/templates/nginx-well-known.conf \
-  | sed s/'{your_domain}'/"${YOUR_DOMAIN:?}"/g \
-  > /etc/nginx/sites-available/"${YOUR_DOMAIN:?}"
+curl -L "${PROSE_FILES:?}"/templates/nginx-well-known.conf \
+  | sed s/'{your_domain}'/${YOUR_DOMAIN:?}/g \
+  > /etc/nginx/sites-available/${YOUR_DOMAIN:?}
 
-# Create symbolic links to NGINX files (enable sites)
-ln -s /etc/nginx/sites-{available,enabled}/"${YOUR_DOMAIN:?}"
+# Enable NGINX sites
+ln -s /etc/nginx/sites-{available,enabled}/${YOUR_DOMAIN:?}
 ```
 
 ```bash
+# Apply the new NGINX configuration
 systemctl reload nginx
 ```
 
-### Step 6: Check that your Prose Pod is running correctly
+### Step 8: Check that your Prose Pod is running correctly
 
-If you have a Web browser, you can check that your Prose Pod has started successfully by opening the Dashboard at `http://localhost:3030`.
+If you have a Web browser, you can check that your Prose Pod has started successfully by opening the Dashboard at `http://localhost:8081`.
 
 Otherwise, you can run:
 
 ```bash
-curl http://localhost:3030/api/pod/version
+curl http://localhost:8081/api/pod/version
 ```
 
 If you get a JSON payload back containing information about the versions of you Prose Pod’s components, it means everything should be working correctly. If you want to make sure everything is well configured or if the call fails, you will have to check the logs.
@@ -316,9 +366,9 @@ docker compose -f /etc/prose/compose.yaml logs
 
 If the logs you see still don’t guide you to a solution, [reach out to our technical support team](https://prose.org/contact/) which will gladly help you fix any issue you encounter.
 
-### Step 7: Initializing your Prose Pod
+### Step 9: Initializing your Prose Pod
 
-Now that your Prose Pod is running, you need to create the first admin account, configure your DNS records and invite your first colleague. All of this can be done using the administration Dashboard which is accessible at `http://localhost:3030`.
+Now that your Prose Pod is running, you need to create the first admin account, configure your DNS records and invite your first colleague. All of this can be done using the administration Dashboard which is accessible at `http://localhost:8081`.
 
 !! Those steps could also be done using the Prose Pod API directly but it’s pretty advanced and subject to changes so we won’t document it here. However, if you are interested in doing so you can [reach out to our technical support team](https://prose.org/contact/) which will guide you into using the Pod API.
 
@@ -341,7 +391,7 @@ prose 10800 IN CNAME {hostname}
 
 ! You can change `prose` to something else, it’s not hard-coded anywhere on our side, but beware that our guides will assume you used this value so you’ll have to change it everywhere we mention `prose.{your_domain}`.
 
-Now, or after a few minutes (for your DNS provider to propagate the new records), you should be able to open `https://prose.{your_domain}:3030` in your web browser and see your Prose Pod Dashboard. If you get a SSL error, go back to [the “SSL certificates” section](#ssl-certificates) and make sure everything is correct.
+Now, or after a few minutes (for your DNS provider to propagate the new records), you should be able to open `https://prose.{your_domain}:8081` in your web browser and see your Prose Pod Dashboard. If you get a SSL error, go back to [the “SSL certificates” section](#ssl-certificates) and make sure everything is correct.
 
 ! If you can’t access your Dashboard at this point, feel free to [contact our technical support team](https://prose.org/contact/) which will gladly help you fix your configuration.
 
