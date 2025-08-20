@@ -1,6 +1,6 @@
 TITLE: Maintaining a Prose Pod
 INDEX: 2
-UPDATED: 2025-06-24
+UPDATED: 2025-08-20
 
 ## Updating
 
@@ -19,6 +19,10 @@ Then restart using:
 ```bash
 systemctl restart prose
 ```
+
+## Adding a license
+
+If you need a higher user limit than in the Community version, you will have to pay for a Business license. After the payment has been processed, you will receive a `prose.lic` file. Put it in `/etc/prose/prose.lic`, then restart the Pod API (`systemctl restart prose`).
 
 ## After a factory reset
 
