@@ -1,6 +1,6 @@
 TYPE: Markdown
 TITLE: Pod configuration reference
-UPDATED: 2025-06-30
+UPDATED: 2025-08-15
 
 To configure a Prose Pod, you can use the `/etc/prose/prose.toml` configuration file (in [TOML](https://toml.io/) format).
 
@@ -225,7 +225,7 @@ They might expose user data or things like that. You have been warned.
 | `log_config_at_startup` | `bool` | Log the parsed Prose Pod API configuration at startup. | `true` in debug, `false` in release |
 | `detailed_error_responses` | `bool` | Enable detailed error responses (adds detailed messages and debug information). | `true` in debug, `false` in release |
 | `c2s_unencrypted` | `bool` | Allow unencrypted client-to-server connections. | `false` |
-| `skip_startup_actions` | `Vec<String>` | Startup actions to skip (by module name). | `[]` |
+| `skip_startup_actions` | `Vec<String>` | Startup actions to skip (by module name). See [prose-im/prose-pod-api/src/rest-api/src/features/startup_actions/mod.rs`](https://github.com/prose-im/prose-pod-api/blob/0b786c0f5349969cc2a166b0ccc4b5cdbdc33063/src/rest-api/src/features/startup_actions/mod.rs). | `[]` |
 
 ---
 
