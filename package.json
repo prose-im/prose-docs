@@ -24,6 +24,6 @@
     "dev": "./tools/dev.sh"
   },
   "devDependencies": {
-    "chappe": "1.11.0"
+    "chappe": "1.12.0"
   }
 }
