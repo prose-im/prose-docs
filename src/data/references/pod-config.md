@@ -579,6 +579,19 @@ For all keys here, find detailed explanations in
 - Default: `false`
 - Compatibility: Pod Server `>= v0.4.1`
 
+# Policies configuration
+
+Use to enforce company policies.
+
+## Enable apps auto-update
+
+Can be used to prevent Prose apps from trying to auto-update.
+
+- Key: `policies.auto_update_enabled`
+- Type: `bool`
+- Default: `true`
+- Compatibility: Pod Server `>= v0.4.1`
+
 ---
 
 # Advanced configuration
