@@ -432,6 +432,153 @@ Compatibility: Pod API `>= v0.19.2`
 
 !! (\*) At least one of `domain`, `ipv4` or `ipv6` must be set.
 
+# Vendor analytics configuration
+
+For all keys here, find detailed explanations in
+[“Prose vendor analytics” of `prose-im/prose-pod-server`][vendor-analytics-docs].
+
+[vendor-analytics-docs]: https://github.com/prose-im/prose-pod-server/blob/master/api/docs/vendor-analytics.md
+
+## Enable vendor analytics
+
+- Key: `vendor_analytics.enabled`
+- Type: `bool`
+- Default: `true`
+- Compatibility: Pod Server `>= v0.4.1`
+
+## Vendor analytics presets
+
+- Key: `vendor_analytics.presets`
+- Type: Dictionary of vendor analytics configuration (minus `preset` and
+  `presets` keys), by preset name.
+- Default:
+
+  ```toml
+  [vendor_analytics.presets.all]
+  enabled = true
+  # Product usage analytics
+  usage.enabled = true
+  usage.meta_user_count.enabled = true
+  usage.pod_version.enabled = true
+  usage.user_app_version.enabled = true
+  usage.user_lang.enabled = true
+  usage.user_platform.enabled = true
+  # Acquisition analytics
+  acquisition.enabled = true
+  acquisition.pod_domain.enabled = true
+
+  [vendor_analytics.presets.default]
+  inherits = "all"
+  # Make identifying data points opt-in
+  acquisition.pod_domain.enabled = false
+
+  [vendor_analytics.presets.gdpr]
+  inherits = "default"
+  # Disable all analytics events if the Prose Workspace has less than 20
+  # users. After that, companies are forced to provide KYC information
+  # and our per-seat billing system has to know the exact user count.
+  min_cohort_size = 20
+  # Limit locales to reduce identifiability.
+  usage.user_lang.max_locales = 2
+
+  [vendor_analytics.presets.lgpd]
+  inherits = "gdpr"
+  ```
+
+- Compatibility: Pod Server `>= v0.4.1`
+
+## Vendor analytics preset
+
+- Key: `vendor_analytics.preset`
+- Type: `string` (preset name)
+- Default: `"default"`
+- Compatibility: Pod Server `>= v0.4.1`
+
+## Minimum cohort size for vendor analytics
+
+- Key: `vendor_analytics.min_cohort_size`
+- Type: `u8` (optional)
+- Default: `20`
+- Compatibility: Pod Server `>= v0.4.1`
+
+## Product usage analytics
+
+### Enable all product usage analytics
+
+- Key: `vendor_analytics.usage.enabled`
+- Type: `bool`
+- Default: `true`
+- Compatibility: Pod Server `>= v0.4.1`
+
+### Enable user count analytics
+
+- Key: `vendor_analytics.usage.meta_user_count.enabled`
+- Type: `bool`
+- Default: `true`
+- Compatibility: Pod Server `>= v0.4.1`
+
+### Enable Pod version analytics
+
+- Key: `vendor_analytics.usage.pod_version.enabled`
+- Type: `bool`
+- Default: `true`
+- Compatibility: Pod Server `>= v0.4.1`
+
+### Enable app version analytics
+
+- Key: `vendor_analytics.usage.user_app_version.enabled`
+- Type: `bool`
+- Default: `true`
+- Compatibility: Pod Server `>= v0.4.1`
+
+### Enable user locale analytics
+
+- Key: `vendor_analytics.usage.user_lang.enabled`
+- Type: `bool`
+- Default: `true`
+- Compatibility: Pod Server `>= v0.4.1`
+
+### Max user locales in analytics
+
+- Key: `vendor_analytics.usage.user_lang.max_locales`
+- Type: `u8` (optional)
+- Compatibility: Pod Server `>= v0.4.1`
+
+### Enable user platform analytics
+
+- Key: `vendor_analytics.usage.user_platform.enabled`
+- Type: `bool`
+- Default: `true`
+- Compatibility: Pod Server `>= v0.4.1`
+
+### User platform analytics allow list
+
+- Key: `vendor_analytics.usage.user_platform.allow_list`
+- Type: `array` of `string` (optional)
+- Compatibility: Pod Server `>= v0.4.1`
+
+### User platform analytics deny list
+
+- Key: `vendor_analytics.usage.user_platform.deny_list`
+- Type: `array` of `string` (optional)
+- Compatibility: Pod Server `>= v0.4.1`
+
+## Acquisition analytics
+
+### Enable all acquisition analytics
+
+- Key: `vendor_analytics.acquisition.enabled`
+- Type: `bool`
+- Default: `true`
+- Compatibility: Pod Server `>= v0.4.1`
+
+### Enable Pod domain analytics
+
+- Key: `vendor_analytics.acquisition.pod_domain.enabled`
+- Type: `bool`
+- Default: `false`
+- Compatibility: Pod Server `>= v0.4.1`
+
 ---
 
 # Advanced configuration
