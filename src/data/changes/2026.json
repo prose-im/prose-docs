@@ -1,0 +1,20 @@
+[
+  {
+    "group": "pod",
+    "type": "update",
+    "date": "2026-01-04",
+    "text": "Updated [Pod Configuration Reference](/references/pod-config/) for Pod API `v0.19.2` and Pod Server `v0.4.0`."
+  },
+  {
+    "group": "pod",
+    "type": "update",
+    "date": "2026-01-04",
+    "text": "Added vendor analytics to [Pod Configuration Reference](/references/pod-config/)."
+  },
+  {
+    "group": "pod",
+    "type": "update",
+    "date": "2026-01-04",
+    "text": "Added `policies.auto_update_enabled` to [Pod Configuration Reference](/references/pod-config/)."
+  }
+]
