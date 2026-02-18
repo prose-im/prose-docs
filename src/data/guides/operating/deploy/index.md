@@ -413,9 +413,17 @@ prose 10800 IN CNAME {hostname}
 
 Now, or after a few minutes (for your DNS provider to propagate the new records), you should be able to open `https://prose.{your_domain}:8081` in your web browser and see your Prose Pod Dashboard. If you get a SSL error, go back to [the “SSL certificates” section](#ssl-certificates) and make sure everything is correct.
 
-! If you can’t access your Dashboard at this point, feel free to [contact our technical support team](https://prose.org/contact/) which will gladly help you fix your configuration.
+If you can’t access your Dashboard at this point, feel free to [contact our technical support team](https://prose.org/contact/) which will gladly help you fix your configuration. If something went wrong and you’d like to restart the Prose Pod initialization, know that you can run the following and you should be able to restart the initialization from scratch:
 
-Now that you have access to your Dashboard, you can follow [the “Initializing your workspace” section of the “Quickstart” guide](/guides/basics/quickstart/#initializing-your-workspace) to finish configuring your Prose Pod.
+```bash
+systemctl stop prose
+rm -rf /var/lib/prose-pod-server/*
+printf '' > /var/lib/prose-pod-api/database.sqlite
+rm -rf /var/lib/prosody/*
+systemctl start prose
+```
+
+!! Now that you have access to your Dashboard, you can follow [the “Initializing your workspace” section of the “Quickstart” guide](/guides/basics/quickstart/#initializing-your-workspace) to finish configuring your Prose Pod.
 
 + Navigation
   | Initializing your workspace: Finish configuring your Prose Pod using the Dashboard. -> /guides/basics/quickstart/#initializing-your-workspace
