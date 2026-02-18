@@ -27,6 +27,7 @@ To interact with the Server, the Pod API therefore requires it to expose certai
 
 Here are all the directories a Prose Pod uses:
 
+- `/var/lib/prose-pod-server/`: Pod Server data (analytics key…).
 - `/var/lib/prose-pod-api/`: Pod API data (invitations, roles…).
 - `/var/lib/prosody/`: Server data (messages, avatars…).
 - `/etc/prose/`: Prose Pod configuration.
@@ -125,7 +126,7 @@ As detailed in [“Required files and directories”](#required-files-and-direct
 ```bash
 # Directories
 install -o prose -g prose -m 750 -d \
-  /var/lib/{prose-pod-api,prosody} \
+  /var/lib/{prose-pod-server,prose-pod-api,prosody} \
   /etc/{prose,prosody} \
   /etc/prosody/certs
 
