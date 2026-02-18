@@ -58,6 +58,8 @@ Here is an example of what it will look like (potentially outdated but it gives 
 
 [![asciicast](https://asciinema.org/a/AytG7sGBYecRKsQ7dNjtAYwZB.svg)](https://asciinema.org/a/AytG7sGBYecRKsQ7dNjtAYwZB)
 
+We try our best to keep the script POSIX-compliant to ensure you can run it anywhere, but we might miss subtleties by habit of using Bash. If you encounter an error, please [report it to us](https://prose.org/contact/) and run `| bash` instead of `| sh`; it should fix your issue.
+
 ---
 
 ## Manual deployment
