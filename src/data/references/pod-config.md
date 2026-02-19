@@ -813,6 +813,13 @@ Those modules will be enabled globally after every other configuration has been 
 - Default: `[]`
 - Compatibility: Pod API `>= v0.19.2`
 
+Example:
+
+```toml
+[prosody_ext]
+additional_modules_enabled = ["bosh"]
+```
+
 ### Prosody config file path
 
 Path to the Prosody configuration file.
