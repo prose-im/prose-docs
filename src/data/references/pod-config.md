@@ -1,6 +1,6 @@
 TYPE: Markdown
 TITLE: Pod configuration reference
-UPDATED: 2026-02-04
+UPDATED: 2026-02-20
 
 To configure a Prose Pod, you can use the `/etc/prose/prose.toml` configuration
 file (in [TOML](https://toml.io/) format).
@@ -812,6 +812,13 @@ Those modules will be enabled globally after every other configuration has been 
 - Type: `Vec<String>`
 - Default: `[]`
 - Compatibility: Pod API `>= v0.19.2`
+
+Example:
+
+```toml
+[prosody_ext]
+additional_modules_enabled = ["bosh"]
+```
 
 ### Prosody config file path
 
