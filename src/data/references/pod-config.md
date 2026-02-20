@@ -1,6 +1,6 @@
 TYPE: Markdown
 TITLE: Pod configuration reference
-UPDATED: 2026-02-04
+UPDATED: 2026-02-20
 
 To configure a Prose Pod, you can use the `/etc/prose/prose.toml` configuration
 file (in [TOML](https://toml.io/) format).

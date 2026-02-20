@@ -1,6 +1,6 @@
 TITLE: Deploying a Prose Pod
 INDEX: 1
-UPDATED: 2025-08-20
+UPDATED: 2026-02-20
 
 ## Context: The architecture of a Prose Pod
 
