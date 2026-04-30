@@ -16,5 +16,11 @@
     "type": "update",
     "date": "2026-01-04",
     "text": "Added `policies.auto_update_enabled` to [Pod Configuration Reference](/references/pod-config/)."
+  },
+  {
+    "group": "pod",
+    "type": "update",
+    "date": "2026-04-30",
+    "text": "Added [Backups](/guides/operating/backups/) operating guide for Pod Server `v0.5.0`."
   }
 ]
