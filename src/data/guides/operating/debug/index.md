@@ -1,5 +1,5 @@
 TITLE: Debugging a Prose Pod
-INDEX: 3
+INDEX: 20
 UPDATED: 2025-06-24
 
 When something isn’t working correctly in your Prose Pod, your first source of information will be its logs. This guide contains sections for each place where you could see bugs, here is an overview:

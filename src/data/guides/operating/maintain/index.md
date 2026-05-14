@@ -1,5 +1,5 @@
 TITLE: Maintaining a Prose Pod
-INDEX: 2
+INDEX: 10
 UPDATED: 2025-08-20
 
 ## Updating

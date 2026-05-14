@@ -38,7 +38,7 @@ Here are all the directories a Prose Pod uses:
 
 And here are all the files you need to create and maintain:
 
-- `/etc/prose/prose.toml`: See the [Pod configuration reference](http://localhost:8040/references/pod-config/).
+- `/etc/prose/prose.toml`: See the [Pod configuration reference](/references/pod-config/).
 - `/etc/prose/prose.env`: If using our Compose file (see [Example: Compose](#example-compose) later), this is where you can configure environment variables for your Prose Pod.
 - `/etc/prose/prose.lic`: Custom license file.
 - `/etc/prosody/certs/*`: SSL certificates for your domain.
@@ -159,7 +159,7 @@ chown prose:prose /etc/prose/prose.toml
 
 Once done, **edit the file to replace all placeholders** with your company information.
 
-!! For more information about all available configuration, see the [Pod configuration reference](http://localhost:8040/references/pod-config/).
+!! For more information about all available configuration, see the [Pod configuration reference](/references/pod-config/).
 
 #### SSL certificates
 

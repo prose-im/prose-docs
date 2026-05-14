@@ -1,6 +1,6 @@
 TYPE: Markdown
 TITLE: Pod configuration reference
-UPDATED: 2026-02-20
+UPDATED: 2026-05-03
 
 To configure a Prose Pod, you can use the `/etc/prose/prose.toml` configuration
 file (in [TOML](https://toml.io/) format).
@@ -17,6 +17,7 @@ Top-level configuration keys:
 | [`notifiers`](#notifiers-configuration) | Configure how notifications are sent (e.g. when sending invitations). |
 | [`log`](#logging-configuration) | Configure logging. |
 | [`pod`](#pod-configuration) | Configure the Prose Pod itself. |
+| [`backups`](#backups-configuration) | Configure the Prose backups. |
 | [`server`](#server-configuration) | Configure the Prose Pod Server. |
 | [`dashboard`](#dashboard-configuration) | Configure the Prose Pod Dashboard. |
 
@@ -431,6 +432,223 @@ Public network address of the server that runs the Prose Pod.
 Compatibility: Pod API `>= v0.19.2`
 
 !! (\*) At least one of `domain`, `ipv4` or `ipv6` must be set.
+
+# Backups configuration
+
+Backups have been introduced in Pod Server `v0.5.0`.
+Configuration keys will be rejected prior to that.
+
+## Backups compression configuration
+
+### Backups compression algorithm
+
+- Key: `backups.compression.algorithm`
+- Type: `string`
+- Values: `"zstd"` (alias `"Zstandard"`), `"off"` (alias `"none"`)
+- Default: `"zstd"`
+- Compatibility: Pod Server `>= v0.5.0`
+
+### Backups Zstandard compression level
+
+This value is transparently passed to the `zstd` Rust library for forward
+compatibility, meaning any negative or positive value can be used although
+`zstd` only supports `<= 22` at the moment.
+The special value `0` means `zstd`’s default (currently `3`).
+
+- Key: `backups.compression.zstd.compression_level`
+- Type: `i32`
+- Default: `3`
+- Compatibility: Pod Server `>= v0.5.0`
+
+## Backups hashing configuration
+
+### Backups hashing algorithm
+
+Algorithm used to compute integrity checks.
+
+- Key: `backups.hashing.algorithm`
+- Type: `string`
+- Values: `"BLAKE3"`, `"SHA-256"`
+- Default: `"BLAKE3"`
+- Compatibility: Pod Server `>= v0.5.0`
+
+## Backups signing configuration
+
+### Backups mandatory signing
+
+Wether or not unsigned backups should be rejected.
+
+- Key: `backups.signing.mandatory`
+- Type: `bool`
+- Default: `true` if signing is enabled, `false` otherwise
+- Compatibility: Pod Server `>= v0.5.0`
+
+### Backups OpenPGP signing enabled
+
+Whether or not backups should be signed using OpenPGP.
+Further configuration is needed if enabled.
+
+- Key: `backups.signing.pgp.enabled`
+- Type: `bool`
+- Default: `false`
+- Compatibility: Pod Server `>= v0.5.0`
+
+### Backups OpenPGP signing key
+
+Path to the signing-capable OpenPGP Transferable Secret Key to use when signing
+backups.
+
+- Key: `backups.signing.pgp.tsk`
+- Type: `string` (file path)
+- Default: `backups.pgp.tsk` configuration key
+- Compatibility: Pod Server `>= v0.5.0`
+
+### Backups OpenPGP signing key passphrases
+
+Configure via `PROSE_BACKUPS__PGP__PASSPHRASES__<FINGERPRINT>` environment
+variables.
+
+- Key: `backups.signing.pgp.passphrases`
+- Type: Dictionary of `string`, by key/subkey long fingerprint.
+- Default: `backups.pgp.passphrases` configuration key
+- Compatibility: Pod Server `>= v0.5.0`
+
+### Backups additional OpenPGP trusted issuers
+
+Paths to OpenPGP certificates previously used when signing backups.
+
+Those SHOULD NOT contain any private key material.
+
+- Key: `backups.signing.pgp.additional_trusted_issuers`
+- Type: List of `string` (file paths)
+- Default: `[]`
+- Compatibility: Pod Server `>= v0.5.0`
+
+## Backups encryption configuration
+
+### Backups encryption mode
+
+- Key: `backups.encryption.mode`
+- Type: `string`
+- Values: `"pgp"` (aliases: `"OpenPGP"`, `"gpg"`), `"off"`
+- Default: `"off"`
+- Compatibility: Pod Server `>= v0.5.0`
+
+### Backups encryption enabled
+
+If set to `false`, sets `encryption.mode` to `off`.
+Mainly there as a convenient override, you shouldn’t have to use it.
+
+- Key: `backups.encryption.enabled`
+- Type: `Option<bool>`
+- Default: `None`
+- Compatibility: Pod Server `>= v0.5.0`
+
+### Backups OpenPGP encryption key
+
+Path to the OpenPGP Transferable Secret Key capable of storage encryption to
+use when encrypting backups.
+
+- Key: `backups.encryption.pgp.tsk`
+- Type: `string` (file path)
+- Default: `backups.pgp.tsk` configuration key
+- Compatibility: Pod Server `>= v0.5.0`
+
+### Backups OpenPGP encryption key passphrases
+
+Configure via `PROSE_BACKUPS__PGP__PASSPHRASES__<FINGERPRINT>` environment
+variables.
+
+- Key: `backups.encryption.pgp.passphrases`
+- Type: Dictionary of `string`, by key/subkey long fingerprint.
+- Default: `backups.pgp.passphrases` configuration key
+- Compatibility: Pod Server `>= v0.5.0`
+
+### Backups additional OpenPGP decryption keys
+
+Paths to OpenPGP Transferable Secret Keys previously used when encrypting
+backups.
+
+Those MUST contain private key material.
+
+- Key: `backups.signing.pgp.additional_decryption_keys`
+- Type: List of `string` (file paths)
+- Default: `[]`
+- Compatibility: Pod Server `>= v0.5.0`
+
+### Backups additional OpenPGP decryption recipients
+
+Paths to additional OpenPGP certificates to use when encrypting backups.
+
+Those SHOULD NOT contain any private key material.
+
+- Key: `backups.signing.pgp.additional_recipients`
+- Type: List of `string` (file paths)
+- Default: `[]`
+- Compatibility: Pod Server `>= v0.5.0`
+
+## Backups storage configuration
+
+### Backups storage provider
+
+- Key: `backups.storage.backups.provider`
+- Type: `string`
+- Values: `"s3"` (alias `"S3"`), `"fs"`
+- Default: `backups.storage.provider` configuration key
+- Compatibility: Pod Server `>= v0.5.0`
+
+### Backups S3 storage configuration
+
+- Key: `backups.storage.backups.s3`
+- Type: [S3 storage configuration](#s3-storage-configuration)
+- Default: `backups.storage.s3` configuration, then `backups.s3` configuration
+- Compatibility: Pod Server `>= v0.5.0`
+
+### Backup checks S3 storage configuration
+
+- Key: `backups.storage.checks.s3`
+- Type: [S3 storage configuration](#s3-storage-configuration)
+- Default: `backups.storage.s3` configuration, then `backups.s3` configuration
+- Compatibility: Pod Server `>= v0.5.0`
+
+### Backups FS storage configuration
+
+- Key: `backups.storage.backups.fs`
+- Type: [FS storage configuration](#fs-storage-configuration)
+- Default: `backups.storage.fs` configuration, then `backups.fs` configuration
+- Compatibility: Pod Server `>= v0.5.0`
+
+### Backup checks FS storage configuration
+
+- Key: `backups.storage.checks.fs`
+- Type: [FS storage configuration](#fs-storage-configuration)
+- Default: `backups.storage.fs` configuration, then `backups.fs` configuration
+- Compatibility: Pod Server `>= v0.5.0`
+
+## Backups download configuration
+
+### Backups download URL max TTL
+
+- Key: `backups.download.url_max_ttl`
+- Type: `string` ([Duration](#duration))
+- Default: `"PT5M"`
+- Compatibility: Pod Server `>= v0.5.0`
+
+## Backups caching configuration
+
+### Backups cache directory
+
+- Key: `backups.caching.cache_dir`
+- Type: `string` (directory path)
+- Default: OS-specific temporary directory (e.g. `/tmp` on Lunix)
+- Compatibility: Pod Server `>= v0.5.0`
+
+### Backups cache directory
+
+- Key: `backups.caching.max_backup_cache_size`
+- Type: `string` ([BytesAmount](#bytesamount), optional)
+- Default: OS-specific temporary directory (e.g. `/tmp` on Lunix)
+- Compatibility: Pod Server `>= v0.5.0`
 
 # Vendor analytics configuration
 
@@ -976,3 +1194,32 @@ A duration in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601#Durations
 
 Local part of a JID, as defined in [RFC 6120 - Extensible Messaging and Presence Protocol (XMPP): Core, section 1.4](https://datatracker.ietf.org/doc/html/rfc6120#section-1.4).
 The domain part will be your Server’s domain (i.e. `"{xmpp_node}@{server_domain}"`.
+
+## S3 storage configuration
+
+| Key | Kind | Description | Default |
+| --- | ---- | ----------- | ------- |
+| `bucket_name` | `string` | Bucket name. | - |
+| `region` | `string` | Bucket region. | - |
+| `endpoint_url` | `string` (URI) | Bucket endpoint URL. | - |
+| `access_key` | `string` | S3 access key. | - |
+| `secret_key` | `string` | S3 secret key. | - |
+| `session_token` | `string` (optional) | S3 session token. | `None` |
+| `prefix` | `string` (optional) | Object name prefix. |`None` |
+| `force_path_style` | `bool` (optional) | S3 “Force path style”. | `None` |
+| `object_lock_mode` | `string` (`"compliance"` or `"governance"`, optional) | S3 Object Lock retention mode (case insensitive). | `None` |
+| `object_lock_duration` | `string` ([Duration](#duration), optional) | S3 Object Lock duration. | `None` |
+| `object_lock_legal_hold_status` | `string` (`"on"` or `"off"`, optional) | S3 Object Lock Legal Hold status (case insensitive). | `None` |
+
+## FS storage configuration
+
+| Key | Kind | Description | Default |
+| --- | ---- | ----------- | ------- |
+| `directory` | `string` (directory path) | Path to a directory. | - |
+| `overwrite` | `bool` | Whether or not to override existing files. | `false` |
+| `mode` | `u9` (three-digits octal) | Unix file mode. Must be an octal number between `0o000` and `0o777`. Make sure to write it as an octal (e.g. `fs.mode = 0o600` in TOML). | `0o600` |
+
+## BytesAmount
+
+Amount of bytes. Written as a number followed by `B`, `kB`, `KiB`, `MB`, `MiB`,
+`GB` or `GiB` (e.g. `"5MB"`).
