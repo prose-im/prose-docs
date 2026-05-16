@@ -1,6 +1,6 @@
 TITLE: Deploying a Prose Pod
 INDEX: 1
-UPDATED: 2025-08-20
+UPDATED: 2026-02-20
 
 ## Context: The architecture of a Prose Pod
 
@@ -27,6 +27,7 @@ To interact with the Server, the Pod API therefore requires it to expose certai
 
 Here are all the directories a Prose Pod uses:
 
+- `/var/lib/prose-pod-server/`: Pod Server data (analytics key…).
 - `/var/lib/prose-pod-api/`: Pod API data (invitations, roles…).
 - `/var/lib/prosody/`: Server data (messages, avatars…).
 - `/etc/prose/`: Prose Pod configuration.
@@ -37,7 +38,7 @@ Here are all the directories a Prose Pod uses:
 
 And here are all the files you need to create and maintain:
 
-- `/etc/prose/prose.toml`: See the [Pod configuration reference](http://localhost:8040/references/pod-config/).
+- `/etc/prose/prose.toml`: See the [Pod configuration reference](/references/pod-config/).
 - `/etc/prose/prose.env`: If using our Compose file (see [Example: Compose](#example-compose) later), this is where you can configure environment variables for your Prose Pod.
 - `/etc/prose/prose.lic`: Custom license file.
 - `/etc/prosody/certs/*`: SSL certificates for your domain.
@@ -49,7 +50,7 @@ And here are all the files you need to create and maintain:
 To make deployments blazingly fast, we created a Bash script on [get.prose.org](https://get.prose.org/) that takes care of almost everything for you. To use it, run:
 
 ```bash
-curl -L https://get.prose.org | sh
+curl -Ls https://get.prose.org | sh
 ```
 
 This script cannot support all scenarios, and it will skip steps or abort if it finds any blocking situation. You can try running it first, and do the rest of the deployment by hand using this guide. The main roadblocks are related to SSL certificates, which cannot be automated in some situations.
@@ -57,6 +58,8 @@ This script cannot support all scenarios, and it will skip steps or abort if it 
 Here is an example of what it will look like (potentially outdated but it gives you an idea):
 
 [![asciicast](https://asciinema.org/a/AytG7sGBYecRKsQ7dNjtAYwZB.svg)](https://asciinema.org/a/AytG7sGBYecRKsQ7dNjtAYwZB)
+
+We try our best to keep the script POSIX-compliant to ensure you can run it anywhere, but we might miss subtleties by habit of using Bash. If you encounter an error, please [report it to us](https://prose.org/contact/) and run `| bash` instead of `| sh`; it should fix your issue.
 
 ---
 
@@ -123,7 +126,7 @@ As detailed in [“Required files and directories”](#required-files-and-direct
 ```bash
 # Directories
 install -o prose -g prose -m 750 -d \
-  /var/lib/{prose-pod-api,prosody} \
+  /var/lib/{prose-pod-server,prose-pod-api,prosody} \
   /etc/{prose,prosody} \
   /etc/prosody/certs
 
@@ -156,7 +159,7 @@ chown prose:prose /etc/prose/prose.toml
 
 Once done, **edit the file to replace all placeholders** with your company information.
 
-!! For more information about all available configuration, see the [Pod configuration reference](http://localhost:8040/references/pod-config/).
+!! For more information about all available configuration, see the [Pod configuration reference](/references/pod-config/).
 
 #### SSL certificates
 
@@ -410,9 +413,17 @@ prose 10800 IN CNAME {hostname}
 
 Now, or after a few minutes (for your DNS provider to propagate the new records), you should be able to open `https://prose.{your_domain}:8081` in your web browser and see your Prose Pod Dashboard. If you get a SSL error, go back to [the “SSL certificates” section](#ssl-certificates) and make sure everything is correct.
 
-! If you can’t access your Dashboard at this point, feel free to [contact our technical support team](https://prose.org/contact/) which will gladly help you fix your configuration.
+If you can’t access your Dashboard at this point, feel free to [contact our technical support team](https://prose.org/contact/) which will gladly help you fix your configuration. If something went wrong and you’d like to restart the Prose Pod initialization, know that you can run the following and you should be able to restart the initialization from scratch:
 
-Now that you have access to your Dashboard, you can follow [the “Initializing your workspace” section of the “Quickstart” guide](/guides/basics/quickstart/#initializing-your-workspace) to finish configuring your Prose Pod.
+```bash
+systemctl stop prose
+rm -rf /var/lib/prose-pod-server/*
+printf '' > /var/lib/prose-pod-api/database.sqlite
+rm -rf /var/lib/prosody/*
+systemctl start prose
+```
+
+!! Now that you have access to your Dashboard, you can follow [the “Initializing your workspace” section of the “Quickstart” guide](/guides/basics/quickstart/#initializing-your-workspace) to finish configuring your Prose Pod.
 
 + Navigation
   | Initializing your workspace: Finish configuring your Prose Pod using the Dashboard. -> /guides/basics/quickstart/#initializing-your-workspace

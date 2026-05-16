@@ -1,5 +1,5 @@
 TITLE: Telemetry
-INDEX: 4
+INDEX: 80
 UPDATED: 2025-05-31
 
 If you would like to intregrate Prose in your [OpenTelemetry](https://opentelemetry.io/) pipeline, know that the Prose Pod API supports OpenTelemetry out of the box. To enable it, you just need to set 3 environment variables:
